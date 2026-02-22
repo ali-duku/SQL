@@ -324,6 +324,120 @@ COUNTRY_DATA = [
     (752, "SWE", "Sweden", "Swedish", "SEK", "Swedish Krona", "Europe", 0),
 ]
 
+EN_AR_EXACT_MAP = {
+    "Export": "تصدير",
+    "Import": "استيراد",
+    "General": "عام",
+    "Services": "خدمات",
+    "Industry": "صناعة",
+    "Trade": "تجارة",
+    "Public": "عام",
+    "Private": "خاص",
+    "Male": "ذكر",
+    "Female": "أنثى",
+    "Single": "أعزب",
+    "Married": "متزوج",
+    "Divorced": "مطلق",
+    "Outpatient": "عيادات خارجية",
+    "Emergency": "طوارئ",
+    "Inpatient": "تنويم",
+    "Revenue": "إيرادات",
+    "Expenditure": "مصروفات",
+    "Capital": "رأسمالي",
+    "Operating": "تشغيلي",
+    "Subsidy": "دعم",
+    "Up": "ارتفاع",
+    "Down": "انخفاض",
+    "Stable": "مستقر",
+    "Qatar": "قطر",
+    "Saudi Arabia": "المملكة العربية السعودية",
+    "United Arab Emirates": "الإمارات العربية المتحدة",
+    "United States": "الولايات المتحدة",
+    "Germany": "ألمانيا",
+    "Qatari": "قطري",
+    "Saudi": "سعودي",
+    "Emirati": "إماراتي",
+    "American": "أمريكي",
+    "German": "ألماني",
+}
+
+EN_AR_WORD_MAP = {
+    "export": "تصدير",
+    "import": "استيراد",
+    "general": "عام",
+    "services": "خدمات",
+    "industry": "صناعة",
+    "trade": "تجارة",
+    "public": "عام",
+    "private": "خاص",
+    "male": "ذكر",
+    "female": "أنثى",
+    "single": "أعزب",
+    "married": "متزوج",
+    "divorced": "مطلق",
+    "outpatient": "عيادات خارجية",
+    "emergency": "طوارئ",
+    "inpatient": "تنويم",
+    "revenue": "إيرادات",
+    "expenditure": "مصروفات",
+    "capital": "رأسمالي",
+    "operating": "تشغيلي",
+    "subsidy": "دعم",
+    "up": "ارتفاع",
+    "down": "انخفاض",
+    "stable": "مستقر",
+    "qatar": "قطر",
+    "saudi": "سعودي",
+    "arabia": "العربية",
+    "united": "المتحدة",
+    "arab": "عربي",
+    "emirates": "الإمارات",
+    "states": "الولايات",
+    "gulf": "الخليج",
+    "middle": "الوسطى",
+    "east": "الشرق",
+    "north": "الشمال",
+    "america": "أمريكا",
+    "europe": "أوروبا",
+    "asia": "آسيا",
+    "health": "الصحة",
+    "economic": "اقتصادي",
+    "diversification": "تنويع",
+    "human": "بشري",
+    "indicator": "مؤشر",
+    "value": "قيمة",
+    "target": "مستهدف",
+    "latest": "أحدث",
+    "measurement": "قياس",
+    "unit": "وحدة",
+    "source": "مصدر",
+    "frequency": "تكرار",
+    "annual": "سنوي",
+    "quarterly": "ربع سنوي",
+    "monthly": "شهري",
+    "weekly": "أسبوعي",
+    "daily": "يومي",
+    "administrative": "إداري",
+    "data": "بيانات",
+    "database": "قاعدة بيانات",
+    "survey": "مسح",
+    "national": "وطني",
+    "development": "تنمية",
+    "strategy": "استراتيجية",
+    "cluster": "عنقود",
+    "pillar": "ركيزة",
+    "outcome": "ناتج",
+    "mapping": "مواءمة",
+    "description": "وصف",
+    "quality": "جودة",
+    "score": "درجة",
+    "high": "مرتفع",
+    "medium": "متوسط",
+    "low": "منخفض",
+    "gdp": "الناتج المحلي الإجمالي",
+    "nds": "استراتيجية التنمية الوطنية",
+}
+
 class SyntheticGenerator:
     def __init__(self, args: argparse.Namespace, tables: Dict[str, TableMeta], metric_map: Dict[str, List[dict]]):
         self.args = args
@@ -336,11 +450,152 @@ class SyntheticGenerator:
 
         self.id_pools: Dict[str, List] = defaultdict(list)
         self.country_strength: Dict[int, float] = {}
+        self.gender_by_id: Dict[int, Tuple[str, str]] = {1: ("Male", "ذكر"), 2: ("Female", "أنثى")}
+        self.indicator_trend_by_id: Dict[int, str] = {}
 
         self.null_rates: Dict[Tuple[str, str], float] = {}
         for tname, tmeta in tables.items():
             for c in tmeta.column_names:
                 self.null_rates[(tname, c)] = random.uniform(args.null_rate_min, args.null_rate_max)
+        self.table_pair_cache: Dict[str, List[Tuple[str, str]]] = {}
+
+    @staticmethod
+    def metric_get(row: dict, *keys: str) -> Optional[str]:
+        if not isinstance(row, dict):
+            return None
+        norm = {str(k).strip().lower(): v for k, v in row.items()}
+        for key in keys:
+            v = norm.get(str(key).strip().lower())
+            if v is None:
+                continue
+            s = str(v).strip()
+            if s:
+                return s
+        return None
+
+    def translate_en_to_ar(self, value: object) -> str:
+        if value is None:
+            return ""
+        text = str(value).strip()
+        if not text:
+            return ""
+        if text in EN_AR_EXACT_MAP:
+            return EN_AR_EXACT_MAP[text]
+
+        tokens = re.split(r"(\W+)", text)
+        out: List[str] = []
+        for tok in tokens:
+            if not tok:
+                continue
+            key = tok.lower()
+            if key in EN_AR_WORD_MAP:
+                out.append(EN_AR_WORD_MAP[key])
+            elif re.fullmatch(r"[A-Za-z_]+", tok):
+                # Keep AR-only output even when a token is unknown.
+                out.append("عنصر")
+            else:
+                out.append(tok)
+        translated = "".join(out).strip()
+        if not translated:
+            return "قيمة"
+        if re.search(r"[A-Za-z]", translated):
+            tokens2 = re.split(r"(\W+)", translated)
+            out2: List[str] = []
+            for tok in tokens2:
+                if re.fullmatch(r"[A-Za-z_]+", tok or ""):
+                    out2.append("عنصر")
+                else:
+                    out2.append(tok)
+            translated = "".join(out2).strip()
+        return translated if translated else "قيمة"
+
+    def ensure_arabic_text(self, value: object) -> str:
+        s = "" if value is None else str(value).strip()
+        if not s:
+            return "قيمة"
+        if re.search(r"[A-Za-z]", s):
+            return self.translate_en_to_ar(s)
+        return s
+
+    def en_ar_pairs(self, table: str) -> List[Tuple[str, str]]:
+        if table in self.table_pair_cache:
+            return self.table_pair_cache[table]
+        cols = set(self.tables[table].column_names)
+        pairs: List[Tuple[str, str]] = []
+        for c in self.tables[table].column_names:
+            if c.endswith("_AR"):
+                en = c[:-3] + "_EN"
+                if en in cols:
+                    pairs.append((en, c))
+                    continue
+                # Some schemas use BASE + _AR where the English/source column is BASE (no _EN suffix).
+                base = c[:-3]
+                if base in cols:
+                    pairs.append((base, c))
+        self.table_pair_cache[table] = pairs
+        return pairs
+
+    def enforce_ar_pairs_for_row(self, table: str, cols: Sequence[str], row_values: List[object], metric_hint: Optional[dict] = None) -> None:
+        idx_map = {c: i for i, c in enumerate(cols)}
+
+        # Table-specific hard rule from source-of-truth request
+        if table == "gac_fact_time_to_import_and_export":
+            en_idx = idx_map.get("CATEGORY_EN")
+            ar_idx = idx_map.get("CATEGORY_AR")
+            if en_idx is not None:
+                en_val = row_values[en_idx]
+                if en_val not in ("Export", "Import"):
+                    en_val = random.choice(["Export", "Import"])
+                    row_values[en_idx] = en_val
+                if ar_idx is not None:
+                    row_values[ar_idx] = EN_AR_EXACT_MAP.get(str(en_val), self.translate_en_to_ar(en_val))
+
+        for en_col, ar_col in self.en_ar_pairs(table):
+            en_idx = idx_map.get(en_col)
+            ar_idx = idx_map.get(ar_col)
+            if en_idx is None or ar_idx is None:
+                continue
+            en_val = row_values[en_idx]
+            if en_val is None:
+                row_values[ar_idx] = None
+                continue
+
+            if metric_hint and table == "dim_indicators":
+                if ar_col == "INDICATOR_DEFINITION_AR":
+                    ar_text = self.metric_get(metric_hint, "Short Description AR", "Short Description AR ")
+                    row_values[ar_idx] = self.ensure_arabic_text(ar_text if ar_text else self.translate_en_to_ar(en_val))
+                    continue
+
+            row_values[ar_idx] = self.ensure_arabic_text(self.translate_en_to_ar(en_val))
+
+    def enforce_id_consistency_for_row(self, table: str, cols: Sequence[str], row_values: List[object]) -> None:
+        idx_map = {c: i for i, c in enumerate(cols)}
+
+        # Keep gender text values consistent with GENDER_ID.
+        gid_idx = idx_map.get("GENDER_ID")
+        if gid_idx is not None and row_values[gid_idx] is not None:
+            try:
+                gid = int(row_values[gid_idx])
+            except Exception:
+                gid = None
+            if gid in self.gender_by_id:
+                g_en, g_ar = self.gender_by_id[gid]
+                if "GENDER_EN" in idx_map:
+                    row_values[idx_map["GENDER_EN"]] = g_en
+                if "GENDER_AR" in idx_map:
+                    row_values[idx_map["GENDER_AR"]] = g_ar
+
+        # Keep trend direction consistent with INDICATOR_ID when both exist.
+        iid_idx = idx_map.get("INDICATOR_ID")
+        trend_idx = idx_map.get("TREND_DIRECTION")
+        if iid_idx is not None and trend_idx is not None and row_values[iid_idx] is not None:
+            try:
+                iid = int(row_values[iid_idx])
+            except Exception:
+                iid = None
+            trend = self.indicator_trend_by_id.get(iid) if iid is not None else None
+            if trend:
+                row_values[trend_idx] = trend
 
     def allocate_rows(self) -> Dict[str, int]:
         dims = [t for t in self.tables if classify_table_role(t) == "dimension"]
@@ -422,26 +677,41 @@ class SyntheticGenerator:
             rows = []
             for item in COUNTRY_DATA[: max(1, count)]:
                 cid, iso, name, nat, ccode, ccy, region, gcc = item
-                rows.append((cid, iso, name, nat, ccode, ccy, region, bool(gcc), f"https://flags.example/{iso.lower()}.png", name, nat, region))
+                rows.append(
+                    (
+                        cid,
+                        iso,
+                        name,
+                        nat,
+                        ccode,
+                        ccy,
+                        region,
+                        bool(gcc),
+                        f"https://flags.example/{iso.lower()}.png",
+                        self.translate_en_to_ar(name),
+                        self.translate_en_to_ar(nat),
+                        self.translate_en_to_ar(region),
+                    )
+                )
             self.id_pools["COUNTRY_ID"] = [r[0] for r in rows]
             self.country_strength = {cid: np.clip(np.random.normal(1.0 + (0.3 if cid == 634 else 0), 0.2), 0.5, 1.7) for cid in self.id_pools["COUNTRY_ID"]}
             return rows
 
         if table == "dim_gender":
             rows = [
-                (1, 1, 1, 1, "Male", "Male", "run-1", "trg-1", dt.datetime.utcnow(), "", "pipeline", "2026"),
-                (2, 2, 2, 2, "Female", "Female", "run-1", "trg-1", dt.datetime.utcnow(), "", "pipeline", "2026"),
+                (1, 1, 1, 1, "Male", "ذكر", "run-1", "trg-1", dt.datetime.utcnow(), "", "pipeline", "2026"),
+                (2, 2, 2, 2, "Female", "أنثى", "run-1", "trg-1", dt.datetime.utcnow(), "", "pipeline", "2026"),
             ]
             self.id_pools["GENDER_ID"] = [1, 2]
             return [tuple(r[: len(cols)]) for r in rows]
 
         if table == "dim_marital_status":
-            rows = [(1, "Single", "Single"), (2, "Married", "Married"), (3, "Divorced", "Divorced")]
+            rows = [(1, "Single", "أعزب"), (2, "Married", "متزوج"), (3, "Divorced", "مطلق")]
             self.id_pools["MARITAL_STATUS_ID"] = [r[0] for r in rows]
             return rows
 
         if table == "hmc_dim_visit_type":
-            rows = [(1, "Outpatient", "Outpatient"), (2, "Emergency", "Emergency"), (3, "Inpatient", "Inpatient")]
+            rows = [(1, "Outpatient", "عيادات خارجية"), (2, "Emergency", "طوارئ"), (3, "Inpatient", "تنويم")]
             self.id_pools["VISIT_TYPE_ID"] = [r[0] for r in rows]
             return rows
 
@@ -469,6 +739,12 @@ class SyntheticGenerator:
                         row[j] = sector
                     elif c == "INDICATOR_DEFINITION":
                         row[j] = definition
+                    elif c == "INDICATOR_NAME_AR":
+                        row[j] = self.ensure_arabic_text(self.translate_en_to_ar(name))
+                    elif c == "INDICATOR_DEFINITION_AR":
+                        row[j] = self.ensure_arabic_text(self.metric_get(m, "Short Description AR", "Short Description AR ") or self.translate_en_to_ar(definition))
+                    elif c == "INDICATOR_SECTOR_AR":
+                        row[j] = self.ensure_arabic_text(self.translate_en_to_ar(sector))
                     elif c == "EARLIEST_DATE_WHERE_QATAR_IS_AVAILABLE":
                         row[j] = self.args.start_year
                     elif c == "TARGET_VALUE_NUMERIC":
@@ -477,8 +753,10 @@ class SyntheticGenerator:
                         row[j] = dt.datetime.utcnow()
                     elif c == "TARGET_YEAR":
                         row[j] = self.args.end_year
+                    elif c == "TREND_DIRECTION":
+                        row[j] = random.choice(["Up", "Down", "Stable"])
                     elif c.endswith("_AR"):
-                        row[j] = row[j - 1] if j > 0 else name
+                        row[j] = self.translate_en_to_ar(row[j - 1] if j > 0 else name)
                     elif c in ("IS_QPULSE",):
                         row[j] = bool(np.random.rand() > 0.5)
                     elif dtype in ("LONG", "INT"):
@@ -487,7 +765,13 @@ class SyntheticGenerator:
                         row[j] = round(float(np.random.uniform(0, 100)), 4)
                     else:
                         row[j] = f"{c.title()} {i+1}"
+                self.enforce_ar_pairs_for_row(table, cols, row, metric_hint=m if isinstance(m, dict) else None)
                 rows.append(tuple(row))
+                if "INDICATOR_ID" in cols and "TREND_DIRECTION" in cols:
+                    iid = row[cols.index("INDICATOR_ID")]
+                    tr = row[cols.index("TREND_DIRECTION")]
+                    if iid is not None and tr is not None:
+                        self.indicator_trend_by_id[int(iid)] = str(tr)
             self.id_pools["INDICATOR_ID"] = [r[cols.index("INDICATOR_ID")] for r in rows if "INDICATOR_ID" in cols]
             return rows
 
@@ -497,6 +781,7 @@ class SyntheticGenerator:
             row = []
             for c in cols:
                 row.append(self.make_value(table, c, i, {}))
+            self.enforce_ar_pairs_for_row(table, cols, row)
             rows.append(tuple(row))
         if key_col:
             key_idx = cols.index(key_col)
@@ -611,12 +896,24 @@ class SyntheticGenerator:
             return random.choice(["QAR", "USD", "EUR", "SAR", "AED"])
         if "TREND_DIRECTION" in cname:
             return random.choice(["Up", "Down", "Stable"])
+        if table == "gac_fact_time_to_import_and_export" and cname == "CATEGORY_EN":
+            val = random.choice(["Export", "Import"])
+            row_ctx[cname] = val
+            return val
+        if table == "gac_fact_time_to_import_and_export" and cname == "CATEGORY_AR":
+            en_val = row_ctx.get("CATEGORY_EN")
+            if en_val not in ("Export", "Import"):
+                en_val = random.choice(["Export", "Import"])
+                row_ctx["CATEGORY_EN"] = en_val
+            return EN_AR_EXACT_MAP.get(str(en_val), self.translate_en_to_ar(en_val))
         if "CATEGORY" in cname or "TYPE" in cname or "GROUP" in cname or "SECTOR" in cname:
             return random.choice(["General", "Services", "Industry", "Trade", "Public", "Private"])
         if cname.endswith("_AR"):
-            return "AR " + self.fake.word().title()
+            en_col = cname[:-3] + "_EN"
+            en_val = row_ctx.get(en_col)
+            return self.translate_en_to_ar(en_val) if en_val is not None else "عام"
         if cname.endswith("_EN"):
-            return self.fake.word().title()
+            return random.choice(list(EN_AR_EXACT_MAP.keys()))
         if "PIPELINE" in cname:
             return random.choice(["npc_pipeline", "gold_pipeline", "metrics_pipeline"])
         if cname == "ADF_PERIOD":
@@ -635,6 +932,9 @@ class SyntheticGenerator:
     def generate_fact_rows(self, table: str, count: int) -> Iterable[Tuple]:
         cols = self.tables[table].column_names
         ycol = table_year_column(cols)
+        date_idx = cols.index("DATE_ID") if "DATE_ID" in cols else None
+        year_idx = cols.index("YEAR") if "YEAR" in cols else None
+        survey_year_idx = cols.index("SURVEY_YEAR") if "SURVEY_YEAR" in cols else None
         has_triplet = all(c in cols for c in ("COUNTRY_ID", "INDICATOR_ID")) and ycol is not None
         used_triplet = set()
 
@@ -651,9 +951,21 @@ class SyntheticGenerator:
                 val = self.make_value(table, c, i, ctx)
                 ctx[c.upper()] = val
                 row.append(val)
+            self.enforce_ar_pairs_for_row(table, cols, row)
+            self.enforce_id_consistency_for_row(table, cols, row)
+
+            # Enforce strict DATE_ID -> YEAR/SURVEY_YEAR consistency.
+            if date_idx is not None and row[date_idx] is not None:
+                date_year = int(str(row[date_idx])[:4])
+                if year_idx is not None:
+                    row[year_idx] = date_year
+                if survey_year_idx is not None:
+                    row[survey_year_idx] = date_year
 
             if has_triplet:
                 yv = ctx.get(ycol) if ycol else None
+                if date_idx is not None and row[date_idx] is not None and ycol in ("YEAR", "SURVEY_YEAR"):
+                    yv = int(str(row[date_idx])[:4])
                 triplet = (ctx.get("COUNTRY_ID"), yv, ctx.get("INDICATOR_ID"))
                 if triplet in used_triplet:
                     i += 1
