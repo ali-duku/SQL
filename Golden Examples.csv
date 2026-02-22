@@ -1,0 +1,458 @@
+#,Natural Language Question,Ground Truth SQL query (L3) ,Layer3_Actual,Layer4_Actual
+1,What is the yearly nominal GDP growth trend?,"SELECT YEAR, SUM(CURRENT_GDP_NOMINAL) AS total_gdp_nominal,
+  LAG(SUM(CURRENT_GDP_NOMINAL)) OVER (ORDER BY YEAR) AS prev_gdp,
+  ROUND(((SUM(CURRENT_GDP_NOMINAL) - LAG(SUM(CURRENT_GDP_NOMINAL)) OVER (ORDER BY YEAR)) / 
+  LAG(SUM(CURRENT_GDP_NOMINAL)) OVER (ORDER BY YEAR)) * 100, 2) AS gdp_growth_pct
+ FROM gold.vw_npc_gdp_by_economic_activity
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+2,Which 5 countries have the highest latest LPI score?,"SELECT c.COUNTRY_NAME_EN, l.YEAR, l.LPI_SCORE
+ FROM gold.intl_fact_lpi_ranking l
+ JOIN gold.dim_country c ON l.COUNTRY_ID = c.COUNTRY_ID
+ WHERE l.YEAR = (SELECT MAX(YEAR) FROM gold.intl_fact_lpi_ranking)
+ ORDER BY l.LPI_SCORE DESC
+ LIMIT 5;",,
+3,What is the average obesity rate in Qatar by gender for the latest year?,"SELECT GENDER_EN, ROUND(AVG(VALUE), 2) AS avg_obesity_rate
+ FROM gold.intl_fact_obesity_rate
+ WHERE COUNTRY_ID = (SELECT COUNTRY_ID FROM gold.dim_country WHERE COUNTRY_NAME_EN = 'Qatar')
+  AND YEAR = (SELECT MAX(YEAR) FROM gold.intl_fact_obesity_rate)
+ GROUP BY GENDER_EN;",,
+4,Is there a correlation between LPI score and logistics timeliness?,"SELECT YEAR, ROUND(AVG(LPI_SCORE),2) AS avg_lpi, ROUND(AVG(TIMELINESS_SCORE),2) AS avg_timeliness
+ FROM gold.intl_fact_lpi_ranking
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+5,What is the trend in the ratio of Qatari STEM graduates (education)?,"SELECT YEAR, SUM(GRADUATES_IN_STEM_FIELDS) AS total_stem,
+  SUM(GRADUATES_IN_ALL_FIELDS) AS total_all,
+  ROUND(SUM(GRADUATES_IN_STEM_FIELDS)/SUM(GRADUATES_IN_ALL_FIELDS)*100,2) AS stem_ratio_pct
+ FROM gold.moehe_fact_qatari_stem_graduates
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+6,How has the ratio of public debt to GDP changed over time?,"SELECT YEAR, ROUND(AVG(`Debt/GDP`),2) AS avg_debt_to_gdp
+ FROM gold.mof_fact_public_debt_as_percentage_of_gdp
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+7,Which 5 years had the highest Real GDP from manufacturing?,"SELECT dd.year, SUM(REAL_GDP) AS total_real_gdp
+ FROM gold.vw_npc_gdp_manufacturing_labor_productivity_growth gdp
+ JOIN gold.dim_date dd on gdp.DATE_ID = dd.DATE_ID
+ GROUP BY dd.YEAR
+ ORDER BY total_real_gdp DESC
+ LIMIT 5;",,
+8,What is the CPI value trend by basket group?,"SELECT b.BASKET_GROUP_DESCRIPTION_EN, d.YEAR, ROUND(AVG(v.CPI_VALUE),2) AS avg_cpi
+ FROM gold.vw_npc_cpi v
+ JOIN gold.npc_dim_cpi_basket_group b ON v.BASKET_GROUP_ID = b.BASKET_GROUP_ID
+ JOIN gold.dim_date d ON v.DATE_ID = d.DATE_ID
+ GROUP BY b.BASKET_GROUP_DESCRIPTION_EN, d.YEAR
+ ORDER BY b.BASKET_GROUP_DESCRIPTION_EN, d.YEAR;",,
+9,Is there a correlation between GDP and labor force productivity growth?,"SELECT dd.YEAR, ROUND(AVG(g.REAL_GDP),2) AS avg_real_gdp,
+  ROUND(AVG(g.PRODUCTIVITY_PERCENTAGE_GROWTH),2) AS avg_productivity_growth
+ FROM gold.vw_npc_gdp_non_hydrocarbon_labor_productivity_growth g join dim_date dd on g.date_id = dd.date_id
+ GROUP BY dd.YEAR
+ ORDER BY dd.YEAR;",,
+10,Which 5 countries have the highest Ease of Doing Business score?,"SELECT c.COUNTRY_NAME_EN, e.YEAR, ROUND(AVG(e.EASE_OF_DOING_BUSINESS_SCORE),2) AS avg_score
+ FROM gold.intl_fact_ease_of_doing_business e
+ JOIN gold.dim_country c ON e.COUNTRY_ID = c.COUNTRY_ID
+ WHERE e.YEAR = (SELECT MAX(YEAR) FROM gold.intl_fact_ease_of_doing_business)
+ GROUP BY c.COUNTRY_NAME_EN, e.YEAR
+ ORDER BY avg_score DESC
+ LIMIT 5;",,
+11,What is the gender distribution of Qatari university student completions?,"SELECT YEAR, GENDER, SUM(STUDENTS_WHO_COMPLETED_UNIVERSITY_EDUCATION) AS completed_students
+ FROM gold.moehe_fact_university_students_completion_percentage
+ WHERE NATIONALITY = 'Qatari'
+ GROUP BY YEAR, GENDER
+ ORDER BY YEAR;",,
+12,What is non-hydrocarbon revenue as a percentage of total government revenues?,"SELECT YEAR, ROUND(AVG(`NON_OIL_&_GAS/TOTAL_REV`),2) AS non_hydro_revenue_pct
+ FROM gold.mof_fact_non_hydrocarbon_government_revenue_as_percentage_of_total_government_revenues
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+13,What is the trend in the teacher-to-student ratio in public schools?,"SELECT YEAR, ROUND(AVG(RATIO_TEACHER_TO_STUDENT),2) AS avg_ratio
+ FROM gold.moehe_fact_teachers_students_ratio_public
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+14,What is the tourism occupancy rate by month (latest year)?,"SELECT YEAR, MONTH, ROUND(AVG(OCCUPANCY_RATE),2) AS avg_occ_rate
+ FROM gold.qt_vw_occupancy_rate
+ WHERE YEAR = (SELECT MAX(YEAR) FROM gold.qt_vw_occupancy_rate)
+ GROUP BY YEAR, MONTH
+ ORDER BY MONTH;",,
+15,How has agricultural self-sufficiency improved year over year?,"SELECT dd.YEAR, 
+  ROUND(AVG(SELF_SUFFICIENCY_PERCENTAGE),2) AS avg_self_sufficiency,
+  ROUND(AVG(SELF_SUFFICIENCY_PERCENTAGE) - 
+  LAG(AVG(SELF_SUFFICIENCY_PERCENTAGE)) OVER (ORDER BY YEAR),2) AS yoy_change
+ FROM gold.mom_fact_commodities_self_sufficiency g join dim_date dd on g.date_id = dd.date_id
+ GROUP BY dd.YEAR
+ ORDER BY dd.YEAR;",,
+16,What is the foreign trade value by trade type?,"SELECT t.TRADE_TYPE_EN, ROUND(SUM(f.TRADE_VALUE)/1e9,2) AS trade_value_billion_qr
+ FROM gold.vw_npc_foreign_trade_summary f
+ JOIN gold.npc_dim_foreign_trade_trade_type t ON f.TRADE_TYPE_ID = t.TRADE_TYPE_ID
+ GROUP BY t.TRADE_TYPE_EN
+ ORDER BY trade_value_billion_qr DESC;",,
+17,What is the trend in R&D funding sources?,"SELECT YEAR, ROUND(SUM(PRIVATE_FUNDS),2) AS private_funds,
+  ROUND(SUM(GRANTS),2) AS grants,
+  ROUND(SUM(DIRECT_RND_CONTRACTS),2) AS direct_contracts
+ FROM gold.npc_fact_rnd r
+ JOIN gold.dim_date d ON r.DATE_ID = d.DATE_ID
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+18,What is the real estate price trend by municipality?,"SELECT m.MUNICIPALITY_EN, YEAR, ROUND(AVG(PRICE_PER_METER),2) AS avg_price_per_meter
+ FROM gold.moj_fact_real_estate_transactions r
+ JOIN gold.npc_dim_labor_force_municipality m ON r.MUNICIPALITY_ID = m.MUNICIPALITY_ID
+ JOIN gold.dim_date d ON r.DATE_ID = d.DATE_ID
+ GROUP BY m.MUNICIPALITY_EN, YEAR
+ ORDER BY YEAR;",,
+19,Is there a correlation between university STEM graduates and GDP?,"SELECT g.YEAR, SUM(s.GRADUATES_IN_STEM_FIELDS) AS total_stem, 
+  SUM(e.CURRENT_GDP_NOMINAL) AS total_gdp
+ FROM gold.moehe_fact_qatari_stem_graduates s
+ JOIN gold.vw_npc_gdp_by_economic_activity e ON s.YEAR = e.YEAR
+ JOIN gold.dim_date g ON s.DATE_ID = g.DATE_ID
+ GROUP BY g.YEAR
+ ORDER BY g.YEAR;",,
+20,Which 10 countries have the highest total exports value (latest year)?,"SELECT c.COUNTRY_NAME_EN, ROUND(SUM(f.TOTAL_EXPORTS)/1e9,2) AS exports_billion_qr
+ FROM gold.vw_npc_trade_non_hydrocarbon_exports f
+ JOIN gold.dim_country c ON f.trade_COUNTRY_ID = c.COUNTRY_ID
+ WHERE f.YEAR = (SELECT MAX(YEAR) FROM gold.vw_npc_trade_non_hydrocarbon_exports)
+ GROUP BY c.COUNTRY_NAME_EN
+ ORDER BY exports_billion_qr DESC
+ LIMIT 10;",,
+21,What is the distribution of employment types?,"select distinct EMPLOYMENT_TYPE_ID, EMPLOYMENT_TYPE_EN, EMPLOYMENT_TYPE_AR from npc_nih_lakehouse_prod.gold.npc_dim_labor_force_employment_type order by EMPLOYMENT_TYPE_ID;",,
+22,What is the year-over-year change in CPI for each basket group?,"SELECT b.BASKET_GROUP_DESCRIPTION_EN, dd.YEAR,
+  ROUND(AVG(v.CPI_VALUE),2) AS avg_cpi,
+  ROUND(AVG(v.CPI_VALUE) - LAG(AVG(v.CPI_VALUE)) OVER (PARTITION BY b.BASKET_GROUP_DESCRIPTION_EN ORDER BY dd.YEAR),2) AS yoy_cpi_change
+ FROM gold.vw_npc_cpi v
+ JOIN gold.npc_dim_cpi_basket_group b ON v.BASKET_GROUP_ID = b.BASKET_GROUP_ID
+ JOIN gold.dim_date dd ON v.DATE_ID = dd.DATE_ID
+ GROUP BY b.BASKET_GROUP_DESCRIPTION_EN, dd.YEAR
+ ORDER BY b.BASKET_GROUP_DESCRIPTION_EN, dd.YEAR;",,
+23,How do male vs female obesity rates compare across the GCC?,"SELECT c.COUNTRY_NAME_EN, o.YEAR, o.GENDER_EN, ROUND(AVG(o.VALUE),2) AS avg_rate
+ FROM gold.intl_fact_obesity_rate o
+ JOIN gold.dim_country c ON o.COUNTRY_ID = c.COUNTRY_ID
+ WHERE c.COUNTRY_NAME_EN IN ('Qatar', 'Saudi Arabia', 'Kuwait', 'Bahrain', 'Oman', 'UAE')
+  AND o.YEAR = (SELECT MAX(YEAR) FROM gold.intl_fact_obesity_rate)
+ GROUP BY c.COUNTRY_NAME_EN, o.YEAR, o.GENDER_EN
+ ORDER BY c.COUNTRY_NAME_EN, o.GENDER_EN;",,
+24,What is the yearly percentage of Qatari students completing university?,"SELECT YEAR, ROUND(SUM((STUDENTS_WHO_COMPLETED_UNIVERSITY_EDUCATION))/sum(STUDENTS_WHO_COMPLETED_POST_SECONDARY_EDUCATION)*100,2) AS completion_rate
+ FROM gold.moehe_fact_university_students_completion_percentage
+ WHERE NATIONALITY = 'Qatari'
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+25,What is the annual occupancy rate by year?,"SELECT YEAR, ROUND(AVG(OCCUPANCY_RATE),2) AS avg_occ_rate
+ FROM gold.qt_vw_occupancy_rate
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+26,What is the annual GDP by economic activity?,"SELECT ECONOMIC_ACTIVITY_DESCRIPTION_EN, year, round(SUM(CURRENT_GDP_NOMINAL)/ 1e9, 2) AS gdp_per_activity_billion_qr
+ FROM gold.vw_npc_gdp_by_economic_activity
+ GROUP BY ECONOMIC_ACTIVITY_DESCRIPTION_EN, year
+ ORDER BY SUM(CURRENT_GDP_NOMINAL) desc;",,
+27,Which 5 years had the highest public debt ratio?,"SELECT YEAR, ROUND(AVG(`Debt/GDP`),2) AS avg_ratio
+ FROM gold.mof_fact_public_debt_as_percentage_of_gdp
+ GROUP BY YEAR
+ ORDER BY avg_ratio DESC
+ LIMIT 5;",,
+28,Which 3 economic activities contribute the most to Real GDP (latest year)?,"SELECT 
+  ECONOMIC_ACTIVITY_DESCRIPTION_EN, 
+  ROUND(SUM(CONSTANT_GDP_REAL) / 1e9, 2) AS constant_real_gdp_billion_qr
+ FROM gold.vw_npc_gdp_by_economic_activity
+ WHERE YEAR = (
+  SELECT MAX(YEAR) 
+  FROM gold.vw_npc_gdp_by_economic_activity
+ )
+ GROUP BY ECONOMIC_ACTIVITY_DESCRIPTION_EN
+ ORDER BY constant_real_gdp_billion_qr DESC
+ LIMIT 3;",,
+29,How has the government non-hydrocarbon revenue share changed over time?,"SELECT YEAR, ROUND(AVG(`NON_OIL_&_GAS/TOTAL_REV`),2) AS share_pct,
+  ROUND(AVG(`NON_OIL_&_GAS/TOTAL_REV`) - LAG(AVG(`NON_OIL_&_GAS/TOTAL_REV`)) OVER (ORDER BY YEAR),2) AS yoy_diff
+ FROM gold.mof_fact_non_hydrocarbon_government_revenue_as_percentage_of_total_government_revenues
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+30,What is the inflation rate (CPI) by year?,"SELECT dd.YEAR, ROUND((AVG(CPI_VALUE) - LAG(AVG(CPI_VALUE)) OVER (ORDER BY dd.YEAR)) / LAG(AVG(CPI_VALUE)) OVER (ORDER BY dd.YEAR) * 100,2) AS inflation_pct
+ FROM gold.vw_npc_cpi v join gold.dim_date dd on v.DATE_ID = dd.DATE_ID
+ GROUP BY dd.YEAR
+ ORDER BY dd.YEAR;",,
+31,What is the ratio of research grants to total R&D spending?,"SELECT YEAR, 
+  ROUND(SUM(GRANTS) / (SUM(PRIVATE_FUNDS)+SUM(GRANTS)+SUM(DIRECT_RND_CONTRACTS)) * 100, 2) AS grant_ratio
+ FROM gold.npc_fact_rnd r
+ JOIN gold.dim_date d ON r.DATE_ID = d.DATE_ID
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+32,What is the trade balance (exports minus imports) per year?,"SELECT 
+  d.YEAR,
+  ROUND((
+  SUM(CASE WHEN tp.TRADE_TYPE_EN = 'Export' THEN f.TRADE_VALUE ELSE 0 END) -
+  SUM(CASE WHEN tp.TRADE_TYPE_EN = 'Import' THEN f.TRADE_VALUE ELSE 0 END)
+  ) / 1e9, 2) AS trade_balance_billion_qr
+ FROM gold.npc_fact_foreign_trade f
+ JOIN gold.dim_date d 
+  ON f.DATE_ID = d.DATE_ID
+ JOIN gold.npc_dim_foreign_trade_trade_type tp ON f.TRADE_TYPE_ID = tp.TRADE_TYPE_ID
+ GROUP BY d.YEAR
+ ORDER BY d.YEAR;",,
+33,What is the real estate transaction value trend (QAR)?,"SELECT 
+  d.YEAR, 
+  ROUND(SUM(r.PROPERTY_VALUE) / 1e9, 2) AS total_property_value_billion_qr
+ FROM gold.moj_fact_real_estate_transactions r
+ JOIN gold.dim_date d 
+  ON r.DATE_ID = d.DATE_ID
+ GROUP BY d.YEAR
+ ORDER BY d.YEAR;",,
+34,How is CPI value distributed across major groups?,"SELECT b.BASKET_GROUP_DESCRIPTION_EN, ROUND(AVG(v.CPI_VALUE),2) AS avg_cpi
+ FROM gold.vw_npc_cpi v
+ JOIN gold.npc_dim_cpi_basket_group b ON v.BASKET_GROUP_ID = b.BASKET_GROUP_ID
+ JOIN gold.dim_date dd ON v.DATE_ID = dd.DATE_ID
+ GROUP BY b.BASKET_GROUP_DESCRIPTION_EN
+ ORDER BY avg_cpi DESC;",,
+35,What is manufacturing sector GDP contribution as a percentage of total GDP?,"SELECT YEAR, 
+  ROUND(SUM(CASE WHEN ECONOMIC_ACTIVITY_DESCRIPTION_EN = 'Manufacturing' THEN CURRENT_GDP_NOMINAL ELSE 0 END) / 
+  SUM(CURRENT_GDP_NOMINAL) * 100,2) AS manufacturing_share_pct
+ FROM gold.vw_npc_gdp_by_economic_activity
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+36,What is labor productivity growth by year?,"SELECT dd.YEAR,
+  sum(v.NUMBER_OF_PERSONS) as total_persons, round(sum(v.LABOR_FORCE_PRODUCTIVITY),2) as total_productivity
+  --ROUND(AVG(CASE WHEN ECONOMIC_ACTIVITY_GROUP = 'Services' THEN PRODUCTIVITY_PERCENTAGE_GROWTH END),2) AS service_growth
+ FROM gold.vw_npc_gdp_manufacturing_labor_productivity_growth v JOIN gold.dim_date dd ON v.date_id = dd.date_id
+ GROUP BY dd.YEAR
+ ORDER BY dd.YEAR;",,
+37,What is the annual change in tourism arrivals?,"SELECT YEAR, SUM(ARRIVALS) AS arrivals,
+  SUM(ARRIVALS) - LAG(SUM(ARRIVALS)) OVER (ORDER BY YEAR) AS yoy_change
+ FROM silver.qt_arrivals
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+38,Which 5 countries show the greatest improvement in international connectivity ranking over time?,"SELECT 
+  dc.COUNTRY_NAME_EN,
+  YEAR,
+  INTERNATIONAL_CONNECTIVITY_SCORE,
+  GLOBAL_RANKING,
+  PREVIOUS_RANK,
+  RANK_DIFFERENCE,
+  TREND_DIRECTION
+ FROM gold.intl_fact_iata_index ia join gold.dim_country dc on ia.COUNTRY_ID = dc.COUNTRY_ID
+ WHERE YEAR = (
+  SELECT MAX(YEAR) 
+  FROM gold.intl_fact_iata_index
+ )
+ ORDER BY RANK_DIFFERENCE DESC
+ LIMIT 5;",,
+39,What is the monthly trend of international arrivals by border type for the latest year?,"SELECT 
+  YEAR,
+  MONTH,
+  BORDER_TYPE_EN,
+  SUM(ARRIVALS) AS total_arrivals
+ FROM gold.qt_fact_international_visitors
+ WHERE YEAR = (
+  SELECT MAX(YEAR) 
+  FROM gold.qt_fact_international_visitors
+ )
+ GROUP BY YEAR, MONTH, BORDER_TYPE_EN
+ ORDER BY YEAR, MONTH, total_arrivals DESC;",,
+40,"What is the venture capital funding trend, and how does it compare to GDP proportionally by year?","SELECT 
+  YEAR,
+  ROUND(SUM(FUNDING_AMOUNT_QR)/1e9, 2) AS total_funding_billion_qr,
+  ROUND(AVG(PROPORTION_TO_GDP_PERCENT), 2) AS avg_proportion_to_gdp_pct,
+  SUM(DEALS) AS total_deals,
+  ROUND(AVG(VALUE_DIFFERENCE), 2) AS avg_change_from_prev,
+  SUM(CASE WHEN TREND_DIRECTION = 'Positive' THEN 1 ELSE 0 END) AS up_trend_count,
+  SUM(CASE WHEN TREND_DIRECTION = 'Negative' THEN 1 ELSE 0 END) AS down_trend_count
+ FROM gold.intl_fact_vc_deals_startups_value
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+41,Which 5 countries did Qatar export to the most in the most recent year?,"SELECT c.TRADE_COUNTRY_NAME_EN, ROUND(SUM(f.TOTAL_EXPORTS)/1e9,2) AS total_export_billion_qr
+ FROM gold.vw_npc_trade_non_hydrocarbon_exports f
+ JOIN gold.npc_dim_foreign_trade_trade_country c ON f.TRADE_COUNTRY_ID = c.TRADE_COUNTRY_ID
+ WHERE f.YEAR = (SELECT MAX(YEAR) FROM gold.vw_npc_trade_non_hydrocarbon_exports)
+ GROUP BY c.TRADE_COUNTRY_NAME_EN
+ ORDER BY total_export_billion_qr DESC
+ LIMIT 5;",,
+42,What is the yearly trend in irrigation water consumption (million cubic meters)?,"SELECT 
+  d.YEAR,
+  ROUND(SUM(m.IRRIGATION_WATER_CONSUMPTION_M3) / 1e6, 2) AS total_consumption_million_m3
+ FROM gold.mom_fact_irrigation_water_consumption m
+ JOIN gold.dim_date d 
+  ON m.DATE_ID = d.DATE_ID
+ GROUP BY d.YEAR
+ ORDER BY d.YEAR;",,
+43,What is the total manufacturing sector investment by ISIC 2 sector per year (million QAR)?,"SELECT 
+  d.YEAR,
+  m.ISIC2_CODE_DESCRIPTION_EN AS sector,
+  ROUND(SUM(m.FIRM_CAPITAL_INVESTMENT_QAR)/1e6, 2) AS total_investment_million_qar,
+  COUNT(DISTINCT m.COMPANY_REGISTRATION_NUMBER) AS number_of_firms
+ FROM gold.moci_fact_manufacturing_sector_total_investments m
+ JOIN gold.dim_date d 
+  ON m.DATE_ID = d.DATE_ID
+ GROUP BY d.YEAR, m.ISIC2_CODE_DESCRIPTION_EN
+ ORDER BY d.YEAR, total_investment_million_qar DESC;",,
+44,What is the CPI deviation from the national average by basket group?,"SELECT dd.YEAR, b.BASKET_GROUP_DESCRIPTION_EN,
+  ROUND(AVG(v.CPI_VALUE) - AVG(AVG(v.CPI_VALUE)) OVER (PARTITION BY dd.YEAR),2) AS deviation
+ FROM gold.vw_npc_cpi v
+ JOIN gold.npc_dim_cpi_basket_group b ON v.BASKET_GROUP_ID = b.BASKET_GROUP_ID
+ join gold.dim_date dd on v.DATE_ID = dd.DATE_ID
+ GROUP BY dd.YEAR, b.BASKET_GROUP_DESCRIPTION_EN
+ ORDER BY dd.YEAR;",,
+45,What is the labor force distribution by economic activity and gender?,"SELECT 
+  e.activity_en AS economic_activity,
+  l.GENDER_ID,
+  ROUND(SUM(l.NUMBER_OF_PERSONS)/1e3, 2) AS total_persons_thousands,
+  ROUND(SUM(CASE WHEN l.IS_ECONOMICALLY_ACTIVE = 'true' THEN l.NUMBER_OF_PERSONS ELSE 0 END)/1e3, 2) AS active_persons_thousands,
+  ROUND(SUM(CASE WHEN l.IS_ECONOMICALLY_ACTIVE = 'false' THEN l.NUMBER_OF_PERSONS ELSE 0 END)/1e3, 2) AS inactive_persons_thousands
+ FROM gold.npc_fact_labor_force l
+ JOIN gold.npc_dim_labor_force_economic_activity e 
+  ON l.ECONOMIC_ACTIVITY_ID = e.ECONOMIC_ACTIVITY_ID
+ GROUP BY e.activity_en, l.GENDER_ID
+ ORDER BY total_persons_thousands DESC;",,
+46,Which 5 accommodation segments have the highest RevPAR for the latest date?,"SELECT 
+  SECONDARY_SEGMENT_EN AS segment,
+  ROUND(AVG(REVPAR), 2) AS avg_revpar_qr,
+  ROUND(AVG(ADR), 2) AS avg_adr_qr,
+  SUM(SUPPLY) AS total_supply,
+  SUM(DEMAND) AS total_demand,
+  ROUND(SUM(OCC)/COUNT(DATE), 2) AS avg_occupancy_rate
+ FROM gold.qt_fact_accommodation
+ WHERE DATE = (SELECT MAX(DATE) FROM gold.qt_fact_accommodation)
+ GROUP BY SECONDARY_SEGMENT_EN
+ ORDER BY avg_revpar_qr DESC
+ LIMIT 5;",,
+47,What is total R&D funding by source type for the most recent date?,"SELECT
+  'Direct R&D Contracts' AS funding_source, ROUND(SUM(DIRECT_RND_CONTRACTS)/1e6,2) AS total_amount_million_qr
+ FROM gold.npc_fact_rnd
+ WHERE DATE_ID = (SELECT MAX(DATE_ID) FROM gold.npc_fact_rnd)
+ 
+
+ UNION ALL
+ 
+
+ SELECT
+  'R&D Contracts', ROUND(SUM(RND_CONTRACTS)/1e6,2)
+ FROM gold.npc_fact_rnd
+ WHERE DATE_ID = (SELECT MAX(DATE_ID) FROM gold.npc_fact_rnd)
+ 
+
+ UNION ALL
+ 
+
+ SELECT
+  'Non-Profit Organizations', ROUND(SUM(NON_PROFIT_ORGANIZATIONS)/1e6,2)
+ FROM gold.npc_fact_rnd
+ WHERE DATE_ID = (SELECT MAX(DATE_ID) FROM gold.npc_fact_rnd)
+ 
+
+ UNION ALL
+ 
+
+ SELECT
+  'Individual Donations', ROUND(SUM(INDIVIDUAL_DONATIONS)/1e6,2)
+ FROM gold.npc_fact_rnd
+ WHERE DATE_ID = (SELECT MAX(DATE_ID) FROM gold.npc_fact_rnd)
+ 
+
+ UNION ALL
+ 
+
+ SELECT
+  'Higher Education Institutions', ROUND(SUM(HIGHER_EDUCATION_INSTITUTIONS)/1e6,2)
+ FROM gold.npc_fact_rnd
+ WHERE DATE_ID = (SELECT MAX(DATE_ID) FROM gold.npc_fact_rnd)
+ 
+
+ UNION ALL
+ 
+
+ SELECT
+  'Other Foreign Sources', ROUND(SUM(OTHER_FOREIGN_SOURCES)/1e6,2)
+ FROM gold.npc_fact_rnd
+ WHERE DATE_ID = (SELECT MAX(DATE_ID) FROM gold.npc_fact_rnd);",,
+48,What is the ranking of areas by real estate transaction value?,"SELECT 
+  f.AREA_NAME AS area_name,
+  ROUND(SUM(f.PROPERTY_VALUE)/1e6, 2) AS total_value_million_qr,
+  RANK() OVER (ORDER BY SUM(f.PROPERTY_VALUE) DESC) AS rank_area
+ FROM gold.moj_fact_real_estate_transactions f
+ GROUP BY f.AREA_NAME
+ ORDER BY rank_area;",,
+49,"What is the yearly distribution of GDP sectors (Manufacturing, Services, Others)?","SELECT YEAR,
+  ROUND(SUM(CASE WHEN ECONOMIC_ACTIVITY_DESCRIPTION_EN='Manufacturing' THEN CURRENT_GDP_NOMINAL ELSE 0 END)/SUM(CURRENT_GDP_NOMINAL)*100,2) AS manufacturing_pct,
+  ROUND(SUM(CASE WHEN ECONOMIC_ACTIVITY_DESCRIPTION_EN like '%Services%' THEN CURRENT_GDP_NOMINAL ELSE 0 END)/SUM(CURRENT_GDP_NOMINAL)*100,2) AS services_pct,
+  ROUND(SUM(CASE WHEN ECONOMIC_ACTIVITY_DESCRIPTION_EN NOT like '%Manufacturing%' or ECONOMIC_ACTIVITY_DESCRIPTION_EN not like '%Services%' THEN CURRENT_GDP_NOMINAL ELSE 0 END)/SUM(CURRENT_GDP_NOMINAL)*100,2) AS others_pct
+ FROM gold.vw_npc_gdp_by_economic_activity
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+50,What is the average annual inflation rate?,"WITH yearly_cpi AS (
+  SELECT
+  dd.YEAR,
+  AVG(cpi.CPI_VALUE) AS avg_cpi
+  FROM
+  gold.vw_npc_cpi cpi
+  JOIN gold.dim_date dd
+  ON cpi.DATE_ID = dd.DATE_ID
+  GROUP BY dd.YEAR
+ ),
+ inflation_calc AS (
+  SELECT
+  YEAR,
+  TRY_DIVIDE(avg_cpi - LAG(avg_cpi) OVER (ORDER BY YEAR), LAG(avg_cpi) OVER (ORDER BY YEAR)) * 100 AS inflation_rate
+  FROM yearly_cpi
+ )
+ SELECT
+  ROUND(AVG(inflation_rate), 2) AS avg_inflation_rate
+ FROM inflation_calc
+ WHERE inflation_rate IS NOT NULL;",,
+51,Which 5 segments have the most room nights sold in the latest year?,"SELECT 
+  SECONDARY_SEGMENT_EN,
+  SECONDARY_SEGMENT_AR,
+  ROUND(SUM(TOTAL_ROOM_NIGHTS_SOLD)/1e3, 2) AS total_room_nights_sold_thousands
+ FROM qt_vw_total_room_nights_sold
+ WHERE YEAR = (SELECT MAX(YEAR) FROM qt_vw_total_room_nights_sold)
+ GROUP BY SECONDARY_SEGMENT_EN, SECONDARY_SEGMENT_AR
+ ORDER BY total_room_nights_sold_thousands DESC
+ LIMIT 5;",,
+52,What is the year-over-year export growth percentage?,"SELECT YEAR, 
+  ROUND((SUM(TOTAL_EXPORTS) - LAG(SUM(TOTAL_EXPORTS)) OVER (ORDER BY YEAR)) / LAG(SUM(TOTAL_EXPORTS)) OVER (ORDER BY YEAR) * 100,2) AS export_growth_pct
+ FROM gold.vw_npc_trade_non_hydrocarbon_exports
+ GROUP BY YEAR
+ ORDER BY YEAR;",,
+53,What pattern exists between the debt-to-GDP ratio and inflation?,"SELECT d.YEAR, ROUND(AVG(d.`Debt/GDP`),2) AS debt_ratio, ROUND(AVG(c.CPI_VALUE),2) AS avg_cpi
+ FROM gold.mof_fact_public_debt_as_percentage_of_gdp d
+ join gold.dim_date dd ON d.DATE_ID = dd.DATE_ID
+ JOIN gold.vw_npc_cpi c ON dd.DATE_ID = c.DATE_ID
+ GROUP BY d.YEAR
+ ORDER BY d.YEAR;",,
+54,What is the student completion percentage by gender (latest year)?,"SELECT 
+  GENDER,
+  ROUND(AVG(nvl(try_cast(RATIO as double), 0))*100, 2) AS avg_completion_percent
+ from moehe_fact_university_students_completion_percentage
+ GROUP BY GENDER;",,
+55,What is the year-over-year change in the liner shipping connectivity index for Qatar?," WITH qatar_data AS (
+  SELECT 
+  YEAR,
+  QUARTER_LABEL,
+  INDEX_AVERAGE_Q1_2023_100,
+  RANKING_PER_QUARTER,
+  LAG(INDEX_AVERAGE_Q1_2023_100) OVER (ORDER BY YEAR) AS previous_year_index,
+  LAG(RANKING_PER_QUARTER) OVER (ORDER BY YEAR) AS previous_year_rank
+  FROM intl_fact_liner_shipping_connectivity_index
+  WHERE COUNTRY_ID = (SELECT COUNTRY_ID FROM gold.dim_country WHERE COUNTRY_ISO_CODE = 'QAT')
+ )
+ SELECT 
+  YEAR,
+  QUARTER_LABEL,
+  INDEX_AVERAGE_Q1_2023_100 AS current_index,
+  previous_year_index,
+  INDEX_AVERAGE_Q1_2023_100 - previous_year_index AS yoy_change_index,
+  RANKING_PER_QUARTER AS current_rank,
+  previous_year_rank,
+  previous_year_rank - RANKING_PER_QUARTER AS rank_change,
+  CASE 
+  WHEN INDEX_AVERAGE_Q1_2023_100 - previous_year_index > 0 THEN 'Improved'
+  WHEN INDEX_AVERAGE_Q1_2023_100 - previous_year_index < 0 THEN 'Declined'
+  ELSE 'No Change'
+  END AS trend
+ FROM qatar_data
+ ORDER BY YEAR, QUARTER_LABEL;",,
+56,What is the average R&D expenditure share of GDP?,"SELECT 
+  g.YEAR,
+  ROUND(SUM(r.DIRECT_RND_CONTRACTS + r.RND_CONTRACTS + r.NON_PROFIT_ORGANIZATIONS + 
+  r.INDIVIDUAL_DONATIONS + r.HIGHER_EDUCATION_INSTITUTIONS + r.OTHER_FOREIGN_SOURCES + 
+  r.PRIVATE_FUNDS + r.GRANTS) 
+  / SUM(g.CURRENT_GDP_NOMINAL) * 100, 2) AS rnd_share_percent
+ FROM gold.vw_npc_gdp_by_economic_activity g
+ JOIN gold.dim_date d
+  ON g.year = d.year
+ JOIN gold.npc_fact_rnd r
+  ON d.DATE_ID = r.DATE_ID
+ GROUP BY g.YEAR
+ ORDER BY g.YEAR;",,

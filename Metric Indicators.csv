@@ -1,0 +1,1057 @@
+Indicator ID,Indicator SCEAI Name,Indicator Sector (cleansed),Gold Schema Table Name,X-Axis Options,Y-Axis Options,Group by Options (can be stacked),Filter Options,Short description EN,Short Description AR 
+2,Real Estate Total Transaction Volume (QAR),Additional Economic Indicators,gold.moj_fact_real_estate_transactions,"AREA_NAME
+DATE_ID
+MUNICIPALITY_ID
+PROPERTY_TYPE
+PROPERTY_USAGE_ID","AREA_IN_SQUARE_FEET
+AREA_IN_SQUARE_METERS
+NUMBER_OF_SHARES
+PRICE_PER_FOOT
+PRICE_PER_METER
+PROPERTY_VALUE
+TRANSACTION_NUMBER","AREA_NAME
+MUNICIPALITY_ID
+PROPERTY_TYPE
+PROPERTY_USAGE_ID","AREA_NAME
+MUNICIPALITY_ID
+PROPERTY_TYPE
+PROPERTY_USAGE_ID",Total value of real estate assets sold during the reporting period.,إجمالي قيمة العقارات المباعة خلال فترة التقرير
+7,Non-Hydrocarbon GDP Growth (%),Economic Diversification,gold.vw_npc_gdp_non_hydrocarbon_contribution_growth,DATE_ID,"GROWTH
+GROWTH_PERCENTAGE
+NON_HYDROCARBON_GDP_VALUE
+PREVIOUS_VALUE",,,Growth rate of GDP excluding mining and quarrying activities.,معدل نمو الناتج المحلي الإجمالي باستثناء الأنشطة الهيدروكربونية
+8,Qatar's Ranking in the Global Competitiveness Index,Economic Diversification,gold.INTL_FACT_GLOBAL_COMPETITIVENESS_INDEX,"COUNTRY_ID
+DATE_ID
+ECONOMY_ISO3
+YEAR","GCC_RANK
+GCI_4_0_GLOBAL_COMPETITIVENESS_INDEX_4_0_RANK
+GCI_4_0_GLOBAL_COMPETITIVENESS_INDEX_4_0_SCORE
+PREVIOUS_RANK
+RANK_DIFFERENCE
+
+GCI_4_0_10TH_PILLAR_MARKET_SIZE_RANK
+GCI_4_0_11TH_PILLAR_BUSINESS_DYNAMISM_RANK
+GCI_4_0_12TH_PILLAR_INNOVATION_CAPABILITY_RANK
+GCI_4_0_1ST_PILLAR_INSTITUTIONS_RANK
+GCI_4_0_2ND_PILLAR_INFRASTRUCTURE_RANK
+GCI_4_0_3RD_PILLAR_ICT_ADOPTION_RANK
+GCI_4_0_4TH_PILLAR_MACROECONOMIC_STABILITY_RANK
+GCI_4_0_5TH_PILLAR_HEALTH_RANK
+GCI_4_0_6TH_PILLAR_SKILLS_RANK
+GCI_4_0_7TH_PILLAR_PRODUCT_MARKET_RANK
+GCI_4_0_8TH_PILLAR_LABOR_MARKET_RANK
+GCI_4_0_9TH_PILLAR_FINANCIAL_SYSTEM_RANK
+
+GCI_4_0_10TH_PILLAR_MARKET_SIZE_SCORE
+GCI_4_0_11TH_PILLAR_BUSINESS_DYNAMISM_SCORE
+GCI_4_0_12TH_PILLAR_INNOVATION_CAPABILITY_SCORE
+GCI_4_0_1ST_PILLAR_INSTITUTIONS_SCORE
+GCI_4_0_2ND_PILLAR_INFRASTRUCTURE_SCORE
+GCI_4_0_3RD_PILLAR_ICT_ADOPTION_SCORE
+GCI_4_0_4TH_PILLAR_MACROECONOMIC_STABILITY_SCORE
+GCI_4_0_5TH_PILLAR_HEALTH_SCORE
+GCI_4_0_6TH_PILLAR_SKILLS_SCORE
+GCI_4_0_7TH_PILLAR_PRODUCT_MARKET_SCORE
+GCI_4_0_8TH_PILLAR_LABOR_MARKET_SCORE
+GCI_4_0_9TH_PILLAR_FINANCIAL_SYSTEM_SCORE","COUNTRY_ID
+ECONOMY_ISO3
+
+GCI_4_0_10TH_PILLAR_MARKET_SIZE_RANK
+GCI_4_0_11TH_PILLAR_BUSINESS_DYNAMISM_RANK
+GCI_4_0_12TH_PILLAR_INNOVATION_CAPABILITY_RANK
+GCI_4_0_1ST_PILLAR_INSTITUTIONS_RANK
+GCI_4_0_2ND_PILLAR_INFRASTRUCTURE_RANK
+GCI_4_0_3RD_PILLAR_ICT_ADOPTION_RANK
+GCI_4_0_4TH_PILLAR_MACROECONOMIC_STABILITY_RANK
+GCI_4_0_5TH_PILLAR_HEALTH_RANK
+GCI_4_0_6TH_PILLAR_SKILLS_RANK
+GCI_4_0_7TH_PILLAR_PRODUCT_MARKET_RANK
+GCI_4_0_8TH_PILLAR_LABOR_MARKET_RANK
+GCI_4_0_9TH_PILLAR_FINANCIAL_SYSTEM_RANK
+
+GCI_4_0_10TH_PILLAR_MARKET_SIZE_SCORE
+GCI_4_0_11TH_PILLAR_BUSINESS_DYNAMISM_SCORE
+GCI_4_0_12TH_PILLAR_INNOVATION_CAPABILITY_SCORE
+GCI_4_0_1ST_PILLAR_INSTITUTIONS_SCORE
+GCI_4_0_2ND_PILLAR_INFRASTRUCTURE_SCORE
+GCI_4_0_3RD_PILLAR_ICT_ADOPTION_SCORE
+GCI_4_0_4TH_PILLAR_MACROECONOMIC_STABILITY_SCORE
+GCI_4_0_5TH_PILLAR_HEALTH_SCORE
+GCI_4_0_6TH_PILLAR_SKILLS_SCORE
+GCI_4_0_7TH_PILLAR_PRODUCT_MARKET_SCORE
+GCI_4_0_8TH_PILLAR_LABOR_MARKET_SCORE
+GCI_4_0_9TH_PILLAR_FINANCIAL_SYSTEM_SCORE", ,Qatar’s position in the World Economic Forum Global Competitiveness Index.,ترتيب دولة قطر في مؤشر التنافسية العالمية
+9,Non-Hydrocarbon Government Revenues as a Percentage of Total Government Revenues (%),Economic Diversification,gold.MOF_FACT_NON_HYDROCARBON_GOVERNMENT_REVENUE_AS_PERCENTAGE_OF_TOTAL_GOVERNMENT_REVENUES,"DATE_ID
+YEAR","NON_OIL_&_GAS/TOTAL_REV
+NON_OIL_&_GAS_REVENUE",,,Share of government revenues generated from non-oil sources.,حصة الإيرادات الحكومية غير الهيدروكربونية من إجمالي الإيرادات الحكومية
+10,Cost of Living,Economic Diversification,gold.TEMP_CPI_VIEW,YEAR,AVERAGE_ANNUAL_CPI,,,Change in prices of a representative consumer basket over time.,التغير في أسعار سلة استهلاكية ممثلة للسلع والخدمات
+11,Workforce (economically active ),Economic Diversification,gold.VW_NPC_LBR_PCT_ECON_ACTIVE,YEAR,"ECON_ACTIVE_PERCENTAGE
+HIGH_SKILLED_PERCENTAGE
+TOTAL_POPULATION
+TOTAL_POPULATION_ECON_ACTIVE
+TOTAL_POPULATION_HIGH_SKILLED",,,Population aged 15+ that is employed or actively seeking employment.,إجمالي السكان النشطين اقتصاديًا ممن يعملون أو يبحثون عن عمل
+12,Qatar's Ranking in the Economic Complexity Index,Economic Diversification,gold.intl_fact_economic_complexity_index,"COUNTRY_ID
+DATE_ID
+YEAR","ECI
+ECI_RANK
+GCC_RANK
+PREVIOUS_RANK
+RANK_DIFFERENCE
+
+RESEARCH_VALUE
+TECHNOLOGY_VALUE
+TRADE_VALUE",COUNTRY_ID,COUNTRY_ID,Qatar’s position in the global Economic Complexity Index.,ترتيب دولة قطر في مؤشر تعقيد الاقتصاد
+16,"Real GDP (QAR, bn)",Economic Diversification,gold.vw_npc_gdp_by_economic_activity,"COMPONENTS
+DATE_ID
+INDUSTRY_TYPE
+YEAR","CONSTANT_GDP_REAL
+CURRENT_GDP_NOMINAL","COMPONENTS
+INDUSTRY_TYPE","COMPONENTS
+INDUSTRY_TYPE",GDP at constant prices including mining and quarrying activities.,الناتج المحلي الإجمالي بالأسعار الثابتة شاملاً أنشطة التعدين والمحاجر
+17,Business-funded BERD (as a proportion % of BERD),Additional Economic Indicators,gold.vw_npc_pct_berd,"DATE_ID
+ORGANIZATION_TYPE_ID
+YEAR","BERD_PERCENTAGE
+TOTAL_BERD",ORGANIZATION_TYPE_ID,ORGANIZATION_TYPE_ID,Share of R&D expenditure funded directly by the business sector.,حصة إنفاق قطاع الأعمال على البحث والتطوير من إجمالي الإنفاق على البحث والتطوير
+18,B-READY index (rank),Additional Economic Indicators,gold.INTL_FACT_EASE_OF_DOING_BUSINESS,"COUNTRY_ID
+DATE_ID
+YEAR","EASE_OF_DOING_BUSINESS_SCORE
+GCC_RANK
+GLOBAL_RANK
+PREVIOUS_RANK
+RANK_DIFFERENCE",COUNTRY_ID,COUNTRY_ID,Qatar’s ranking in the World Bank B-READY business environment index.,ترتيب دولة قطر في مؤشر B-READY لسهولة ممارسة الأعمال
+19,Regulatory Quality Index (Percentile Rank),Additional Economic Indicators,gold.INTL_FACT_REGULATORY_QUALITY_INDEX,"COUNTRY_ID
+DATE_ID
+YEAR","PCTRANK
+PREVIOUS_VALUE
+VALUE_DIFFERENCE",COUNTRY_ID,COUNTRY_ID,Qatar’s percentile rank for regulatory quality and policy effectiveness.,ترتيب دولة قطر كنسبة مئوية في مؤشر جودة التنظيم
+20,NTM Frequency Ratio (%),Additional Economic Indicators,gold.intl_fact_ntm_frequency_ratio,"COUNTRY_ID
+DATE_ID
+TRADE_FLOW
+YEAR","NTM_AFFECTED_PRODUCT_COUNT
+NTM_AFFECTED_TRADE
+NTM_COVERAGE_RATIO
+NTM_FREQUENCY_RATIO
+TOTAL_TRADE
+TRADED_PRODUCTS_TOTAL","COUNTRY_ID
+TRADE_FLOW","COUNTRY_ID
+TRADE_FLOW",Percentage of traded products subject to non-tariff measures.,نسبة المنتجات المتداولة التي تخضع لإجراء غير تعريفي واحد أو أكثر
+21,Value of VC deals directed to Qatar-based start-ups (as a % of GDP),Additional Economic Indicators,gold.INTL_FACT_VC_DEALS_STARTUPS_VALUE,"COUNTRY_ID
+DATE_ID
+YEAR","DEALS
+FUNDING_AMOUNT_QR
+GDP
+PROPORTION_TO_GDP_PERCENT
+VALUE_DIFFERENCE",COUNTRY_ID,COUNTRY_ID,Venture capital investment in Qatar-based startups as a share of GDP.,قيمة استثمارات رأس المال المغامر في الشركات الناشئة القطرية كنسبة من الناتج المحلي الإجمالي
+24,Diabetes Rate,Healthcare and Social Services,gold.moph_fact_indicators,"DATE_ID
+GENDER_ID",VALUE,GENDER_ID,"GENDER_ID
+INDICATOR_ID",Percentage of the Qatari population diagnosed with diabetes.,نسبة السكان القطريين المصابين بمرض السكري
+25,Obesity Rate,Healthcare and Social Services,gold.INTL_FACT_OBESITY_RATE,"COUNTRY_ID
+DATE_ID
+GENDER_ID
+YEAR","PREVIOUS_VALUE
+VALUE
+VALUE_DIFFERENCE","GENDER_ID
+COUNTRY_ID","GENDER_ID
+INDICATOR_ID
+COUNTRY_ID",Percentage of adults aged 18+ with a body mass index of 30 or higher.,نسبة البالغين الذين يعانون من السمنة
+26,Tobacco Rate,Healthcare and Social Services,gold.moph_fact_indicators,"DATE_ID
+GENDER_ID",VALUE,GENDER_ID,"GENDER_ID
+INDICATOR_ID",Percentage of the population identified as regular smokers.,نسبة السكان المدخنين بانتظام
+27,Physically Active,Healthcare and Social Services,gold.INTL_FACT_PHYSICALLY_ACTIVE,"COUNTRY_ID
+DATE_ID
+GENDER
+YEAR","PHYSICAL_ACTIVITY_18_PLUS
+PHYSICAL_INACTIVITY_18_PLUS","GENDER
+COUNTRY_ID","GENDER
+COUNTRY_ID",Share of adults meeting recommended physical activity guidelines.,نسبة البالغين الذين يحققون الحد الأدنى الموصى به من النشاط البدني
+28,"Total Investments into Sector (QAR, bn)",Manufacturing,gold.moci_fact_manufacturing_sector_total_investments,"ACTIVITY_TYPE
+COMPANY_REGISTRAION_NUMBER
+DATE_ID
+FIRM_NAME_AR
+FIRM_NAME_EN
+FIRM_STAGE
+ISIC2_CODE
+ISIC2_CODE_DESCRIPTION_AR
+ISIC2_CODE_DESCRIPTION_EN
+ISIC6_CODE
+ISIC6_CODE_DESCRIPTION_AR
+ISIC6_CODE_DESCRIPTION_EN",FIRM_CAPITAL_INVESTMENT_QAR,"ACTIVITY_TYPE
+COMPANY_REGISTRAION_NUMBER
+FIRM_NAME_AR
+FIRM_NAME_EN
+FIRM_STAGE
+ISIC2_CODE
+ISIC2_CODE_DESCRIPTION_AR
+ISIC2_CODE_DESCRIPTION_EN
+ISIC6_CODE
+ISIC6_CODE_DESCRIPTION_AR
+ISIC6_CODE_DESCRIPTION_EN","ACTIVITY_TYPE
+COMPANY_REGISTRAION_NUMBER
+FIRM_NAME_AR
+FIRM_NAME_EN
+FIRM_STAGE
+ISIC2_CODE
+ISIC2_CODE_DESCRIPTION_AR
+ISIC2_CODE_DESCRIPTION_EN
+ISIC6_CODE
+ISIC6_CODE_DESCRIPTION_AR
+ISIC6_CODE_DESCRIPTION_EN",Total capital investments in the manufacturing sector.,إجمالي قيمة استثمارات الإنفاق الرأسمالي في قطاع التصنيع
+30,Annual growth rate of manufacturing sector GDP (in 2018 constant currency terms) (%),Manufacturing,gold.vw_npc_gdp_manufacturing_contribution_growth,YEAR,"GROWTH
+GROWTH_PERCENTAGE
+MANUFACTURING_GDP_VALUE
+PREVIOUS_VALUE",,,Annual real GDP growth rate of the manufacturing sector.,معدل النمو السنوي للناتج المحلي الإجمالي الحقيقي لقطاع التصنيع
+31,Liner Shipping Connectivity Index Score,Transport and Storage,gold.intl_fact_liner_shipping_connectivity_index,"COUNTRY_ID
+DATE_ID
+QUARTER_LABEL
+YEAR","GCC_RANK
+INDEX_AVERAGE_Q1_2023_100
+PREVIOUS_RANK
+RANKING_PER_QUARTER
+RANK_DIFFERENCE",COUNTRY_ID,COUNTRY_ID,Measure of a country’s integration into global container shipping networks.,مستوى اتصال الدولة بشبكات الشحن البحري العالمية
+32,Transport & storage sector - total number of jobs,Transport and Storage,gold.VW_NPC_LBR_NUM_JOBS_TRANSPORT,"AGE_ID
+COUNTRY_ID
+DATE_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID
+YEAR",TOTAL_POPULATION_ECONOMICALLY_ACTIVE,"AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID","AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID",Total number of individuals employed in the transport and storage sector.,إجمالي عدد العاملين في قطاع النقل والتخزين
+32.1,Transport & Storage Sector - Number of Qatari Jobs,Transport and Storage,gold.VW_NPC_LBR_NUM_JOBS_TRANSPORT,"AGE_ID
+COUNTRY_ID
+DATE_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID
+YEAR",TOTAL_POPULATION_ECONOMICALLY_ACTIVE,"AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID","AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID",Number of Qatari nationals employed in the transport and storage sector.,عدد المواطنين القطريين العاملين في قطاع النقل والتخزين
+32.2,Transport & Storage Sector – Number of Non-Qatari Jobs,Transport and Storage,gold.VW_NPC_LBR_NUM_JOBS_TRANSPORT,"AGE_ID
+COUNTRY_ID
+DATE_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID
+YEAR",TOTAL_POPULATION_ECONOMICALLY_ACTIVE,"AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID","AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID",Number of non-Qatari employees working in the transport and storage sector.,عدد غير القطريين العاملين في قطاع النقل والتخزين
+32.3,Transport & Storage Sector - Share of High-Skilled Emp (%),Transport and Storage,gold.vw_npc_lbr_pct_high_skilled_transport,"DATE_ID
+YEAR","HIGH_SKILLED_TRANSPORT_EMPLOYEES
+SHARE_HIGH_SKILLED_TRANSPORT_EMPLOYEES
+TRANSPORT_EMPLOYEES",,,Share of high-skilled workers in the transport and storage sector.,حصة العمالة ذات المهارات العالية من إجمالي العاملين في قطاع النقل والتخزين
+33,Airport Capacity Utilization (%),Transport and Storage,gold.qa_fact_qa_passengers,"PERIOD
+PERIOD_END_DATE_ID
+PERIOD_START_DATE_ID","CURRENT_CAPACITY
+CURRENT_CAPACITY_UTILIZATION_PERCENTAGE
+PERCENTAGE_OF_TRANSFER_PASSENGERS
+TOTAL_PASSENGERS",,,Actual airport usage as a percentage of designed capacity.,نسبة الاستخدام الفعلي لطاقة المطار مقارنة بالقدرة التصميمية
+34,Port Capacity Utilization,Transport and Storage,gold.MWANI_VW_PORT_UTILIZATION_RATE,"DATE_ID
+PORT_ID
+PORT_NAME
+TERMINAL_ID
+TERMINAL_NAME
+YEAR","ACTUAL_UTILIZATION
+FULL_CAPACITY
+UTILIZATION_RATE","PORT_ID
+PORT_NAME
+TERMINAL_ID
+TERMINAL_NAME","PORT_ID
+PORT_NAME
+TERMINAL_ID
+TERMINAL_NAME",Actual port throughput as a percentage of designed capacity.,نسبة الاستخدام الفعلي للطاقة التشغيلية للموانئ مقارنة بالقدرة التصميمية
+34.1,Port Operational Capacity Utilization Rate,Transport and Storage,gold.MWANI_VW_PORT_OPERATIONAL_UTILIZATION_RATE,"DATE_ID
+PORT_ID
+PORT_NAME
+TERMINAL_ID
+TERMINAL_NAME
+YEAR","ACTUAL_UTILIZATION
+OPERATIONAL_CAPACITY
+OPERATIONAL_UTILIZATION_RATE","PORT_ID
+PORT_NAME
+TERMINAL_ID
+TERMINAL_NAME","PORT_ID
+PORT_NAME
+TERMINAL_ID
+TERMINAL_NAME",Share of port operations used relative to designed capacity.,نسبة استغلال الطاقة التشغيلية في الميناء
+35,"Air Transport, Freight (million-ton-km)",Transport and Storage,gold.intl_fact_air_transport_freight,"COUNTRY_ID
+DATE_ID
+YEAR","PREVIOUS_VALUE
+VALUE
+VALUE_DIFFERENCE",COUNTRY_ID,COUNTRY_ID,Volume of air freight transported measured in ton-kilometers.,حجم الشحن الجوي المنقول مقاسًا بالطن كيلومتر
+36,Transport & Storage Sector Contribution to GDP Growth,Transport and Storage,gold.vw_npc_gdp_transport_contribution_growth,YEAR,"GROWTH
+GROWTH_PERCENTAGE
+PREVIOUS_VALUE
+TRANSPORT_GDP_VALUE",,,Annual real GDP growth of the transport and storage sector.,معدل النمو السنوي الحقيقي لقطاع النقل والتخزين
+37,Time to Export (Hrs),Transport and Storage,gold.gac_fact_time_to_import_and_export,"CATEGORY_EN
+CATEGORY_AR
+DATE_ID",TIME_HOURS,CATEGORY,CATEGORY,Time required to complete export documentary and border compliance.,الوقت اللازم لاستكمال إجراءات التصدير الوثائقية والحدودية
+38,Time to Import (Hrs),Transport and Storage,gold.gac_fact_time_to_import_and_export,"CATEGORY_EN
+CATEGORY_AR
+DATE_ID",TIME_HOURS,CATEGORY,CATEGORY,Time required to complete import documentary and border compliance.,الوقت اللازم لاستكمال إجراءات الاستيراد الوثائقية والحدودية
+39,Logistics Performance Index (LPI) Ranking,Transport and Storage,gold.intl_fact_lpi_ranking,"COUNTRY_ID
+DATE_ID
+YEAR","CUSTOMS_GROUPED_RANK
+CUSTOMS_SCORE
+GCC_RANK
+INFRASTRUCTURE_GROUPED_RANK
+INFRASTRUCTURE_SCORE
+INTERNATIONAL_SHIPMENTS_GROUPED_RANK
+INTERNATIONAL_SHIPMENTS_SCORE
+LOGISTICS_COMPETENCE_AND_QUALITY_GROUPED_RANK
+LOGISTICS_COMPETENCE_AND_QUALITY_SCORE
+LPI_GROUPED_RANK
+LPI_SCORE
+PREVIOUS_RANK
+RANK_DIFFERENCE
+TIMELINESS_GROUPED_RANK
+TIMELINESS_SCORE
+TRACKING_AND_TRACING_GROUPED_RANK
+TRACKING_AND_TRACING_SCORE","COUNTRY_ID
+
+GCC_RANK
+LPI_GROUPED_RANK
+LPI_SCORE
+PREVIOUS_RANK
+RANK_DIFFERENCE
+
+CUSTOMS_GROUPED_RANK
+INFRASTRUCTURE_GROUPED_RANK
+INTERNATIONAL_SHIPMENTS_GROUPED_RANK
+LOGISTICS_COMPETENCE_AND_QUALITY_GROUPED_RANK
+TIMELINESS_GROUPED_RANK
+TRACKING_AND_TRACING_GROUPED_RANK
+
+INFRASTRUCTURE_SCORE
+CUSTOMS_SCORE
+INTERNATIONAL_SHIPMENTS_SCORE
+LOGISTICS_COMPETENCE_AND_QUALITY_SCORE
+TIMELINESS_SCORE
+TRACKING_AND_TRACING_SCORE",COUNTRY_ID,Qatar’s ranking in the World Bank Logistics Performance Index.,ترتيب دولة قطر في مؤشر أداء الخدمات اللوجستية
+40,IATA (Air Connectivity) Index,Transport and Storage,gold.INTL_FACT_IATA_INDEX,"COUNTRY_ID
+DATE_ID
+YEAR","GCC_RANK
+GLOBAL_RANKING
+INTERNATIONAL_CONNECTIVITY_SCORE
+PREVIOUS_RANK
+RANK_DIFFERENCE",COUNTRY_ID,COUNTRY_ID,Qatar’s ranking in global air transport connectivity.,ترتيب دولة قطر في مؤشر الربط الجوي الصادر عن الاتحاد الدولي للنقل الجوي
+41,International Visitors,Tourism,gold.QT_FACT_INTERNATIONAL_VISITORS,"BORDER_TYPE_EN
+DATE_ID
+MONTH
+YEAR",ARRIVALS,BORDER_TYPE_EN,BORDER_TYPE_EN,Total number of non-resident visitors to Qatar.,إجمالي عدد الزوار الدوليين القادمين إلى قطر
+42,Total Room Nights Sold (Demand),Tourism,gold.QT_VW_TOTAL_ROOM_NIGHTS_SOLD,"DATE_ID
+MONTH
+SECONDARY_SEGMENT_EN
+YEAR",TOTAL_ROOM_NIGHTS_SOLD,SECONDARY_SEGMENT_EN,SECONDARY_SEGMENT_EN,Total number of hotel room nights sold during the period.,إجمالي عدد ليالي الغرف الفندقية المباعة خلال فترة التقرير
+46,MSCI All Country World Index Ranking,Finance and Insurance,gold.intl_fact_msci_all_country_world_index,"MARKET_TYPE
+REGION","COUNTRY_ID
+REGION","COUNTRY_ID
+REGION
+MARKET_TYPE","COUNTRY_ID
+REGION
+MARKET_TYPE",Qatar’s market classification within the MSCI All Country World Index.,تصنيف دولة قطر ضمن فئات مؤشر مورغان ستانلي للأسواق العالمية
+47,Credit Rating (minimum baseline),Finance and Insurance,gold.INTL_FACT_CREDIT_RATING,"COUNTRY_ID
+DATE_ID
+YEAR","FITCH_LEVEL
+MOODY_FITCH_LT_RATING
+MOODY_LT_RATING_LEVEL
+SP_FITCH_LT_RATING
+SP_LT_RATING_LEVEL",COUNTRY_ID,COUNTRY_ID,Sovereign credit rating assigned by major international rating agencies.,التصنيف الائتماني السيادي لدولة قطر كما تحدده وكالات التصنيف الدولية
+51,Financial and Insurance Activities Sector Contribution to GDP,Finance and Insurance,gold.vw_npc_gdp_FINANCIAL_contribution_growth,YEAR,"FINANCIAL_GDP_VALUE
+GROWTH
+GROWTH_PERCENTAGE
+PREVIOUS_VALUE",,,Annual real GDP growth of the financial and insurance sector.,معدل النمو السنوي الحقيقي لقطاع المال والتأمين
+54,Financial & Insurance Sector - Total Number of Jobs,Finance and Insurance,gold.VW_NPC_LBR_NUM_JOBS_FINANCE,"AGE_ID
+COUNTRY_ID
+DATE_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID
+YEAR",TOTAL_POPULATION_ECONOMICALLY_ACTIVE,"AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID","AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID",Total number of jobs in the financial and insurance sector.,إجمالي عدد العاملين في قطاع المال والتأمين
+54.1,Financial & Insurance Sector - Number of Qatari Jobs,Finance and Insurance,gold.VW_NPC_LBR_NUM_JOBS_FINANCE,"AGE_ID
+COUNTRY_ID
+DATE_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID
+YEAR",TOTAL_POPULATION_ECONOMICALLY_ACTIVE,"AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID","AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID",Number of Qatari nationals employed in the financial and insurance sector.,عدد المواطنين القطريين العاملين في قطاع المال والتأمين
+54.2,Financial & Insurance Sector - Number of Non-Qatari Jobs,Finance and Insurance,gold.VW_NPC_LBR_NUM_JOBS_FINANCE,"AGE_ID
+COUNTRY_ID
+DATE_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID
+YEAR",TOTAL_POPULATION_ECONOMICALLY_ACTIVE,"AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID","AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID",Number of non-Qatari employees in the financial and insurance sector.,عدد غير القطريين العاملين في قطاع المال والتأمين
+56,Ranking in the Global Cybersecurity Index (GCI),Information and Communication,gold.INTL_FACT_CYBERSECURITY_INDEX_RANKING,"COUNTRY_ID
+DATE_ID
+YEAR","CAPACITY_MEASURE
+COOPERATION_MEASURE
+LEGAL_MEASURES
+ORGANIZATION_MEASURE
+TECHNICAL_MEASURE
+TIER_PERFORMANCE
+TIER_RANK","COUNTRY_ID
+CAPACITY_MEASURE
+COOPERATION_MEASURE
+LEGAL_MEASURES
+ORGANIZATION_MEASURE
+TECHNICAL_MEASURE",,Qatar’s ranking in the ITU Global Cybersecurity Index.,ترتيب دولة قطر في مؤشر الأمن السيبراني العالمي
+57,"Percentage of Online, End-to-end Public Services (%)",Information and Communication,gold.INTL_FACT_ONLINE_PUBLIC_SERVICES_PERCENTAGE,"COUNTRY_ID
+DATE_ID
+SURVEY_YEAR","ONLINE_SERVICE_INDEX
+PREVIOUS_VALUE
+VALUE_DIFFERENCE",COUNTRY_ID,,Share of public services delivered fully online end to end.,نسبة الخدمات العامة المقدمة إلكترونيًا بشكل كامل من البداية إلى النهاية
+58,Ranking in the Network Readiness Index (NRI),Information and Communication,gold.intl_fact_network_readiness_index_ranking,"COUNTRY_ID
+DATE_ID
+INCOME_GROUP
+POPULATION
+REGION
+YEAR","GCC_RANK
+GDP_PER_CAPITA
+GOVERNANCE_RANKING
+GOVERNANCE_SCORE
+IMPACT_RANKING
+IMPACT_SCORE
+NRI_RANKING
+NRI_SCORE
+PEOPLE_RANKING
+PEOPLE_SCORE
+PREVIOUS_RANK
+RANK_DIFFERENCE
+TECHNOLOGY_RANKING
+TECHNOLOGY_SCORE","COUNTRY_ID
+INCOME_GROUP
+POPULATION
+REGION
+
+GOVERNANCE_RANKING
+IMPACT_RANKING
+PEOPLE_RANKING
+TECHNOLOGY_RANKING
+
+GOVERNANCE_SCORE
+IMPACT_SCORE
+PEOPLE_SCORE
+TECHNOLOGY_SCORE","COUNTRY_ID
+INCOME_GROUP
+POPULATION
+REGION",Qatar’s ranking in the Network Readiness Index.,ترتيب دولة قطر في مؤشر الجاهزية الشبكية
+60,ICT sector contribution to GDP,Information and Communication,gold.vw_npc_gdp_ict_contribution_growth,YEAR,"GROWTH
+GROWTH_PERCENTAGE
+ICT_GDP_VALUE
+PREVIOUS_VALUE",,,Annual real GDP growth of the ICT sector.,معدل النمو السنوي الحقيقي لمساهمة قطاع الاتصالات وتقنية المعلومات في الناتج المحلي الإجمالي
+61,Education Sector Contribution to GDP,Education,gold.vw_npc_gdp_education_contribution,"DATE_ID
+QUARTER
+YEAR",EDUCATION_GDP_VALUE,,,Annual real GDP growth of the education sector.,المساهمة المباشرة لقطاع التعليم في الناتج المحلي الإجمالي الحقيقي
+62,"Cost per Student (QAR, K-12 public schools) - (QAR, k)",Education,gold.MOEHE_FACT_COST_PER_STUDENT_PUBLIC,"ACADEMIC_YEAR
+DATE_ID
+YEAR","AVERAGE_COST_PER_STUDENT
+EXPENSES
+NUMBER_OF_STUDENTS_IN_PUBLIC_SCHOOLS",ACADEMIC_YEAR,ACADEMIC_YEAR,Average government expenditure per student in public K-12 schools.,متوسط الإنفاق الحكومي لكل طالب في المدارس الحكومية
+63,"Ratio of Teachers to Admin Staff (K-12 public schools), Overall",Education,gold.MOEHE_FACT_TEACHERS_ADMIN_RATIO_PUBLIC,"ACADEMIC_YEAR
+COUNTRY_ID
+DATE_ID
+GENDER
+GENDER_ID
+NATIONALITY
+RATIO_YEAR
+YEAR","NUMBER_OF_ADMINISTRATORS
+NUMBER_OF_TEACHERS
+RATIO_TEACHER_TO_ADMIN","ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY","ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY",Ratio of teachers to administrative staff in public schools.,نسبة عدد المعلمين إلى عدد الموظفين الإداريين في المدارس الحكومية
+63.1,Share of Qatari Teachers %,Education,gold.MOEHE_FACT_SHARE_OF_QATARI_TEACHERS,"ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+DATE_ID
+GENDER
+GENDER_ID
+NATIONALITY
+YEAR","NUMBER_OF_TEACHERS
+VALUE","ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY","ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY",Percentage of teachers who are Qatari nationals.,نسبة المعلمين من حملة الجنسية القطرية
+64,Ratio of Teachers to Students in Public Schools (K-12 Public Schools),Education,gold.MOEHE_FACT_TEACHERS_STUDENTS_RATIO_PUBLIC,"ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+DATE_ID
+GENDER
+GENDER_ID
+NATIONALITY
+RATIO_YEAR
+YEAR","NUMBER_OF_STUDENTS
+NUMBER_OF_TEACHERS
+RATIO_TEACHER_TO_STUDENT","ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY","ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY",Number of students per teacher in public schools.,عدد الطلاب لكل معلم في المدارس الحكومية
+65,Percentage of Qatari Students Out of Total Number of Students in Public Schools (K-12) (%),Education,gold.MOEHE_FACT_QATARI_STUDENTS_PERCENTAGE_PUBLIC,"ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+DATE_ID
+GENDER
+GENDER_ID
+NATIONALITY
+SECTOR_ID
+SECTOR_TYPE
+YEAR","NUMBER_OF_STUDENTS
+RATIO_YEAR","ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY
+SECTOR_ID
+SECTOR_TYPE","ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY
+SECTOR_ID
+SECTOR_TYPE",Percentage of public-school students who are Qatari nationals.,نسبة الطلاب القطريين من إجمالي طلاب المدارس الحكومية
+65.1,Percentage of Qataris enrolled in Government Schools out of the Total Number of Qataris in State Schools (public and private),Education,gold.MOEHE_FACT_QATARIS_IN_GOVT_SCHOOLS_PERCENTAGE,"ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+DATE_ID
+GENDER
+GENDER_ID
+NATIONALITY
+SECTOR_ID
+SECTOR_TYPE
+YEAR","NUMBER_OF_STUDENTS
+RATIO_YEAR","ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY
+SECTOR_ID
+SECTOR_TYPE","ACADEMIC_LEVEL_ID
+ACADEMIC_STAGE
+ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY
+SECTOR_ID
+SECTOR_TYPE",Share of Qatari students enrolled in government schools.,حصة الطلاب القطريين المسجلين في المدارس الحكومية من إجمالي الطلاب القطريين
+67,Qataris Graduating from STEM (% of all Qatari graduates),Education,gold.moehe_fact_qatari_stem_graduates,"ACADEMIC_YEAR
+COUNTRY_ID
+DATE_ID
+GENDER
+GENDER_ID
+NATIONALITY
+YEAR","GRADUATES_IN_ALL_FIELDS
+GRADUATES_IN_STEM_FIELDS
+RATIO_YEAR","ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY","ACADEMIC_YEAR
+COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY",Percentage of Qatari graduates who complete STEM degrees.,نسبة الخريجين القطريين في تخصصات العلوم والتكنولوجيا والهندسة والرياضيات
+68,Expenditure from International Students in Higher Education as a Percentage of Sector GDP (%),Education,gold.qf_fact_expenditure_from_international_students_in_higher_education,"ACADEMIC_YEAR
+COUNTRY_ID
+DATE_ID
+DEGREE_PROGRAM
+UNIVERSITY_NAME
+YEAR","ADDITIONAL_PAYMENTS_ACCOMODATION_MEMBERSHIPS_ETC_QAR
+ANNUAL_TUITION_FEES_PAID_QAR
+EDUCATION_GDP
+EXPENDITURE_FROM_INTERNATIONAL_STUDENTS_IN_HIGHER_EDUCATION_AS_PERCENTAGE_OF_SECTOR_GDP
+NUMBER_OF_STUDENTS","ACADEMIC_YEAR
+COUNTRY_ID
+DEGREE_PROGRAM
+UNIVERSITY_NAME","ACADEMIC_YEAR
+COUNTRY_ID
+DEGREE_PROGRAM
+UNIVERSITY_NAME",Tuition expenditure by international students as a share of education sector GDP.,إنفاق الطلاب الدوليين على التعليم العالي كنسبة من الناتج المحلي لقطاع التعليم
+69,Qatar PISA Ranking,Education,gold.INTL_FACT_PISA_RANKING,"COUNTRY_ID
+DATE_ID
+YEAR","GCC_RANK
+MATHEMATICS_MEAN
+PISA_RANK
+PREVIOUS_RANK
+RANK_DIFFERENCE
+READING_MEAN
+SCIENCE_MEAN
+TOTAL_MEAN_SCORE","COUNTRY_ID
+TOTAL_MEAN_SCORE
+PISA_RANK
+
+MATHEMATICS_MEAN
+READING_MEAN
+SCIENCE_MEAN",COUNTRY_ID,Qatar’s ranking and scores in the latest PISA assessment.,ترتيب دولة قطر في اختبار بيسا الدولي
+70,Health & social services sector contribution to GDP,Healthcare and Social Services,gold.vw_npc_gdp_health_contribution,"DATE_ID
+QUARTER_NUMBER
+YEAR",HEALTH_GDP_VALUE,,,Annual real GDP growth of the health and social services sector.,معدل النمو السنوي الحقيقي لمساهمة قطاع الصحة والخدمات الاجتماعية في الناتج المحلي الإجمالي
+71,Total Number of Hospital Beds,Healthcare and Social Services,gold.moph_fact_indicators,"DATE_ID
+GENDER_ID",VALUE,,INDICATOR_ID,Total number of hospital and clinic beds available in Qatar.,إجمالي عدد الأسرة المتاحة في المستشفيات والعيادات في قطر
+71.1,% Private Sector Beds in Hospitals,Healthcare and Social Services,gold.moph_fact_indicators,"DATE_ID
+GENDER_ID",VALUE,,INDICATOR_ID,Percentage of hospital beds owned and operated by the private sector.,نسبة الأسرة المملوكة والمدارة من قبل القطاع الخاص في المستشفيات
+71.2,% Public Sector Beds in Hospitals,Healthcare and Social Services,gold.moph_fact_indicators,"DATE_ID
+GENDER_ID",VALUE,,INDICATOR_ID,Percentage of hospital beds owned and operated by the public sector.,نسبة الأسرة المملوكة والمدارة من قبل القطاع العام في المستشفيات
+72,Private Expenditure on Health as % of Total Health Expenditure,Healthcare and Social Services,gold.INTL_FACT_PRIVATE_EXPENDITURE,"COUNTRY_ID
+DATE_ID
+PERIOD","PREVIOUS_VALUE
+VALUE
+VALUE_DIFFERENCE",COUNTRY_ID,,Share of total health expenditure provided by the private sector.,حصة الإنفاق الصحي الخاص من إجمالي الإنفاق الصحي
+72.1,Out-of-pocket Expenditure of Current Health Expenditure (%),Healthcare and Social Services,gold.INTL_FACT_OUT_OF_POCKET_EXPENDITURE,"COUNTRY_ID
+DATE_ID
+PERIOD","PREVIOUS_VALUE
+VALUE
+VALUE_DIFFERENCE",COUNTRY_ID,,Share of current health expenditure paid out of pocket.,حصة الإنفاق المباشر من الجيب من إجمالي الإنفاق الصحي
+73,Number of Medical Tourists,Healthcare and Social Services,gold.hmc_fact_hmc_visitors,"DATE_ID
+VISITORS_SUBCATEGORY
+VISIT_TYPE_ID","TOTAL_VISITORS
+UNIQUE_VISITORS","VISITORS_SUBCATEGORY
+VISIT_TYPE_ID","VISITORS_SUBCATEGORY
+VISIT_TYPE_ID",Total number of international visitors traveling to Qatar for medical treatment.,إجمالي عدد الزوار القادمين إلى قطر لغرض العلاج الطبي
+73.1,Total Expenditure on Health Services from Medical Tourism,Healthcare and Social Services,gold.hmc_fact_hmc_revenue,"DATE_ID
+VISITORS_SUBCATEGORY
+VISIT_TYPE_ID","TOTAL_VISITORS
+UNIQUE_VISITORS","VISITORS_SUBCATEGORY
+VISIT_TYPE_ID","VISITORS_SUBCATEGORY
+VISIT_TYPE_ID",Total healthcare expenditure generated by medical tourism.,إجمالي الإنفاق على خدمات الرعاية الصحية الناتج عن السياحة العلاجية
+74.1,"Exports of pharmaceuticals, medical devices & consumables (QAR bn)",Healthcare and Social Services,gold.vw_npc_trade_health_exports,"DATE_ID
+HS_CODE
+QATAR_PORT_ID
+TRADE_COUNTRY_ID
+YEAR",TOTAL_EXPORTS,"HS_CODE
+QATAR_PORT_ID
+TRADE_COUNTRY_ID","HS_CODE
+QATAR_PORT_ID
+TRADE_COUNTRY_ID","Total value of locally produced pharmaceuticals, medical devices, and consumables exported.",القيمة الإجمالية لصادرات الأدوية والأجهزة والمستلزمات الطبية المصنعة محليًا
+75,High-skilled white collar jobs in health,Healthcare and Social Services,gold.vw_npc_lbr_num_jobs_high_skilled_white_collar_health,"DATE_ID
+YEAR",HIGH_SKILLED_HEALTH_EMPLOYEES_WHITE_COLLAR,,,Number of high-skilled white-collar employees in the health and social services sector.,عدد الوظائف الإدارية ذات المهارات العالية في قطاع الصحة والخدمات الاجتماعية
+75.1,Number of Healthcare Practitioners - Qataris,Healthcare and Social Services,gold.vw_npc_lbr_num_jobs_health_qatari,YEAR,QATAR_EMPLOYEES_HEALTH,,,Number of Qatari healthcare practitioners.,عدد الممارسين الصحيين من المواطنين القطريين
+76,"Agriculture, livestock, and fisheries sector contribution to GDP",Agriculture and Livestock,gold.vw_npc_gdp_agriculture_contribution,YEAR,AGRICULTURE_GDP_VALUE,,,"Annual real GDP growth of the agriculture, livestock, and fisheries sector.",معدل النمو السنوي الحقيقي لمساهمة قطاع الزراعة والثروة الحيوانية والسمكية في الناتج المحلي الإجمالي
+77,Exports as a Percentage of Sector Contribution to GDP,Agriculture and Livestock,gold.VW_NPC_EXPORTS_PCT_GDP_AGRICULTURE,"FOREIGN_TRADE_MONTH
+GDP_QUARTER
+YEAR","AGRICULTURE_EXPORTS
+AGRICULTURE_EXPORTS_GDP_RATIO
+AGRICULTURE_NOMINAL_GDP",,,"Agricultural export value as a share of agriculture, livestock, and fisheries sector GDP.",حصة الصادرات الزراعية من الناتج المحلي لقطاع الزراعة والثروة الحيوانية والسمكية
+78,"Crop Yield, Overall",Agriculture and Livestock,gold.mom_fact_crop_production,"CROP_TYPE_EN
+CULTIVATION_TYPE_EN
+DATE_ID","TOTAL_AREA_HECTARE
+TOTAL_PRODUCTION_METRIC_TON
+YIELD_PER_HECTARE","CROP_TYPE_EN
+CULTIVATION_TYPE_EN","CROP_TYPE_EN
+CULTIVATION_TYPE_EN",Total crop output per hectare measured in metric tons.,إجمالي حجم المحاصيل المنتجة لكل هكتار من الأراضي الزراعية
+78.1,"Crop Yield - Vegetables, Greenhouses",Agriculture and Livestock,gold.mom_fact_crop_production,"CROP_TYPE_EN
+CULTIVATION_TYPE_EN
+DATE_ID","TOTAL_AREA_HECTARE
+TOTAL_PRODUCTION_METRIC_TON
+YIELD_PER_HECTARE","CROP_TYPE_EN
+CULTIVATION_TYPE_EN","CROP_TYPE_EN
+CULTIVATION_TYPE_EN",Vegetable yield per hectare from greenhouse cultivation.,إنتاجية الخضروات لكل هكتار من الزراعة في البيوت المحمية
+78.2,"Crop Yield - Vegetables, Open Field",Agriculture and Livestock,gold.mom_fact_crop_production,"CROP_TYPE_EN
+CULTIVATION_TYPE_EN
+DATE_ID","TOTAL_AREA_HECTARE
+TOTAL_PRODUCTION_METRIC_TON
+YIELD_PER_HECTARE","CROP_TYPE_EN
+CULTIVATION_TYPE_EN","CROP_TYPE_EN
+CULTIVATION_TYPE_EN",Vegetable yield per hectare from open-field cultivation.,إنتاجية الخضروات لكل هكتار من الزراعة في الحقول المفتوحة
+79,Total Production,Agriculture and Livestock,gold.mom_fact_crop_production,"CROP_TYPE_EN
+CULTIVATION_TYPE_EN
+DATE_ID","TOTAL_AREA_HECTARE
+TOTAL_PRODUCTION_METRIC_TON
+YIELD_PER_HECTARE","CROP_TYPE_EN
+CULTIVATION_TYPE_EN","CROP_TYPE_EN
+CULTIVATION_TYPE_EN",Total agricultural production measured in million metric tons.,إجمالي حجم الإنتاج الزراعي المحصود
+80,"Production in Greenhouses, Overall",Agriculture and Livestock,gold.mom_fact_crop_production,"CROP_TYPE_EN
+CULTIVATION_TYPE_EN
+DATE_ID","TOTAL_AREA_HECTARE
+TOTAL_PRODUCTION_METRIC_TON
+YIELD_PER_HECTARE","CROP_TYPE_EN
+CULTIVATION_TYPE_EN","CROP_TYPE_EN
+CULTIVATION_TYPE_EN",Total agricultural production from greenhouses measured in million metric tons.,إجمالي حجم الإنتاج الزراعي في البيوت المحمية
+81,"Agriculture, Livestock, and Fisheries Sector- Share of High-Skilled Labor, Overall",Agriculture and Livestock,gold.vw_npc_lbr_pct_high_skilled_agriculture,"Date_ID
+YEAR","AGRICULTURE_EMPLOYEES
+HIGH_SKILLED_AGRICULTIRE_EMPLOYEES
+PROPORTION",,,"Share of high-skilled workers in the agriculture, livestock, and fisheries sector.",حصة العمالة ذات المهارات العالية في قطاع الزراعة والثروة الحيوانية والسمكية
+81.1,"Agriculture, Livestock, and Fisheries Sector - Share of High-Skilled Labor (White Collar)",Agriculture and Livestock,gold.vw_npc_lbr_pct_high_skilled_agriculture_WHITE_COLLAR,"Date_ID
+YEAR","AGRICULTURE_EMPLOYEES
+HIGH_SKILLED_AGRICULTIRE_EMPLOYEES_WHITE_COLLAR
+PROPORTION",,,"Share of high-skilled white-collar workers in the agriculture, livestock, and fisheries sector.",حصة العمالة الإدارية ذات المهارات العالية في قطاع الزراعة والثروة الحيوانية والسمكية
+81.2,"Agriculture, Livestock, and Fisheries Sector - Share of High-Skilled Labor (Share of Qataris)",Agriculture and Livestock,gold.vw_npc_lbr_pct_high_skilled_agriculture_Qatari,"Date_ID
+YEAR","AGRICULTURE_EMPLOYEES
+HIGH_SKILLED_AGRICULTIRE_EMPLOYEES_Qatari
+PROPORTION",,,"Share of Qatari nationals among high-skilled workers in the agriculture, livestock, and fisheries sector.",حصة العمالة القطرية ذات المهارات العالية في قطاع الزراعة والثروة الحيوانية والسمكية
+81.3,"Agriculture, Livestock, and Fisheries Sector - Share of High-Skilled Labor (Blue Collar)",Agriculture and Livestock,gold.vw_npc_lbr_pct_high_skilled_agriculture_BLUE_COLLAR,"Date_ID
+YEAR","AGRICULTURE_EMPLOYEES
+HIGH_SKILLED_AGRICULTIRE_EMPLOYEES_BLUE_COLLAR
+PROPORTION",,,"Share of high-skilled blue-collar workers in the agriculture, livestock, and fisheries sector.",حصة العمالة الفنية ذات المهارات العالية في قطاع الزراعة والثروة الحيوانية والسمكية
+82,Global Food Security Index (GFSI),Agriculture and Livestock,gold.intl_fact_global_food_security_index,"COUNTRY_ID
+DATE_ID
+YEAR","AFFORDABILITY
+AVAILABILITY
+FOOD_SECURITY
+FOOD_SECURITY_ENVIRONMENT_RANK
+GCC_RANK
+PREVIOUS_RANK
+QUALITY_SAFETY
+RANK_DIFFERENCE
+SUSTAINABILITY","COUNTRY_ID
+
+FOOD_SECURITY
+FOOD_SECURITY_ENVIRONMENT_RANK
+GCC_RANK
+PREVIOUS_RANK
+RANK_DIFFERENCE
+
+AFFORDABILITY
+AVAILABILITY
+QUALITY_SAFETY
+SUSTAINABILITY",COUNTRY_ID,Qatar’s score and ranking in the Global Food Security Index.,ترتيب دولة قطر في مؤشر الأمن الغذائي العالمي
+83,Water consumption per ton of crop produced,Agriculture and Livestock,gold.VW_MOM_WATER_CONSUMPTION_PER_TON_OF_CROP_PRODUCED,YEAR,WATER_CONSUMPTION_PER_TON_OF_CROP_PRODUCED,,,Volume of water used per metric ton of crop production.,كمية المياه المستخدمة لإنتاج طن واحد من المحاصيل الزراعية
+84,Non-Hydrocarbon Government Revenue as a Percentage of Non-Hydrocarbon GDP (%),Economic Diversification,gold.mof_fact_non_hydrocarbon_government_revenue_as_percentage_of_non_hydrocarbon_gdp,"DATE_ID
+YEAR","NON_OIL_&_GAS_NON_HYDROCARBON_GDP
+NON_OIL_&_GAS_REVENUE",,,Share of government revenues from non-hydrocarbon sources relative to non-hydrocarbon GDP.,حصة الإيرادات الحكومية غير الهيدروكربونية من الناتج المحلي غير الهيدروكربوني
+86,Non-Hydrocarbon Exports as a Percentage of Total Exports (Goods & Services) (%),Economic Diversification,gold.vw_npc_non_hc_exports_pct,YEAR,"NON_HC_EXPORTS
+NON_HC_EXPORTS_PERCENTAGE
+TOTAL_EXPORTS",,,Share of non-hydrocarbon exports in total goods and services exports.,نسبة الصادرات غير الهيدروكربونية من إجمالي الصادرات الوطنية
+87,Labor Productivity Growth in Non-Hydrocarbon Sectors (%),Economic Diversification,gold.vw_npc_gdp_non_hydrocarbon_labor_productivity_growth,DATE_ID,"LABOR_FORCE_PRODUCTIVITY
+NUMBER_OF_PERSONS
+PRODUCTIVITY_PERCENTAGE_GROWTH
+REAL_GDP",,,Year-on-year growth in labor productivity in non-hydrocarbon sectors.,معدل التحسن السنوي في إنتاجية العمل في القطاعات غير الهيدروكربونية
+88,Annual growth in manufacturing sector exports (%),Manufacturing,gold.vw_manufacturing_exports_growth,YEAR,"CURRENT_ANNUAL_EXPORTS
+DIFFERENCE
+GROWTH_PERCENTAGE
+PREVIOUS_ANNUAL_EXPORTS",,,Annual growth rate of manufacturing sector exports.,معدل النمو السنوي لصادرات قطاع التصنيع
+89,Goods Re-export (QAR billion),Transport and Storage,gold.vw_npc_trade_TOTAL_REEXPORTS,"DATE_ID
+YEAR",TOTAL_REEXPORTS,,,Total value of goods re-exported from Qatar.,قيمة السلع التي يتم إعادة تصديرها من دولة قطر
+92,ICT Exports (QAR billion),Information and Communication,gold.vw_npc_trade_ict_exports,"DATE_ID
+HS_CODE
+PORT_ID
+TRADE_COUNTRY_ID
+YEAR",TOTAL_EXPORTS,"HS_CODE
+PORT_ID
+TRADE_COUNTRY_ID","HS_CODE
+PORT_ID
+TRADE_COUNTRY_ID",Total value of ICT goods and services exports.,إجمالي قيمة صادرات قطاع الاتصالات وتقنية المعلومات
+93,Annual sector labor productivity growth (%) (for manufacturing sector),Manufacturing,gold.vw_npc_gdp_manufacturing_labor_productivity_growth,DATE_ID,"LABOR_FORCE_PRODUCTIVITY
+NUMBER_OF_PERSONS
+PRODUCTIVITY_PERCENTAGE_GROWTH
+REAL_GDP",,,Year-on-year growth in labor productivity in the manufacturing sector.,معدل التحسن السنوي في إنتاجية العمل في قطاع التصنيع
+94,Share of high skilled workers (for manufacturing sector),Manufacturing,gold.vw_npc_lbr_pct_high_skilled_manufacturing,"DATE_ID
+YEAR","HIGH_SKILLED_MANUFACTURING_EMPLOYEES
+MANUFACTURING_EMPLOYEES
+PROPORTION",,,Share of high-skilled workers in the manufacturing sector.,حصة العمالة ذات المهارات العالية من إجمالي العاملين في قطاع التصنيع
+94.1,Share of High Skilled White Collar Labor in Sector (%) (for manufacturing sector),Manufacturing,gold.vw_npc_lbr_pct_high_skilled_manufacturing_WHITE_COLLAR,"DATE_ID
+YEAR","HIGH_SKILLED_MANUFACTURING_EMPLOYEES_WHITE_COLLAR
+MANUFACTURING_EMPLOYEES
+PROPORTION",,,Share of high-skilled white-collar workers in the manufacturing sector.,حصة العمالة الإدارية ذات المهارات العالية في قطاع التصنيع
+94.2,Share of High Skilled Blue Collar Labor in Sector (%) (for manufacturing sector),Manufacturing,gold.vw_npc_lbr_pct_high_skilled_manufacturing_BLUE_COLLAR,"DATE_ID
+YEAR","HIGH_SKILLED_MANUFACTURING_EMPLOYEES_BLUE_COLLAR
+MANUFACTURING_EMPLOYEES
+PROPORTION",,,Share of high-skilled blue-collar workers in the manufacturing sector.,حصة العمالة الفنية ذات المهارات العالية في قطاع التصنيع
+94.3,Share of High Skilled Qatari Labor in Sector (%)(for manufacturing sector),Manufacturing,gold.vw_npc_lbr_pct_high_skilled_Manufacturing_Qatari,"DATE_ID
+YEAR","HIGH_SKILLED_MANUFACTURING_EMPLOYEES_QATARI
+MANUFACTURING_EMPLOYEES
+PROPORTION",,,Share of Qatari nationals among high-skilled workers in the manufacturing sector.,حصة العمالة القطرية ذات المهارات العالية في قطاع التصنيع
+99,Number of ICT Sector Jobs (QAR billion),Information and Communication,gold.VW_NPC_LBR_NUM_JOBS_ICT,"AGE_ID
+COUNTRY_ID
+DATE_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID
+YEAR",TOTAL_POPULATION_ECONOMICALLY_ACTIVE,"AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID","AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID",Total number of jobs in the information and communication technology sector.,إجمالي عدد العاملين في قطاع الاتصالات وتقنية المعلومات
+99.1,Number of ICT Sector Jobs - Qataris,Information and Communication,gold.VW_NPC_LBR_NUM_JOBS_ICT,"AGE_ID
+COUNTRY_ID
+DATE_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID
+YEAR",TOTAL_POPULATION_ECONOMICALLY_ACTIVE,"AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID","AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID",Number of Qatari nationals employed in the ICT sector.,عدد المواطنين القطريين العاملين في قطاع الاتصالات وتقنية المعلومات
+99.2,Number of ICT Sector Jobs - Non Qataris,Information and Communication,gold.VW_NPC_LBR_NUM_JOBS_ICT,"AGE_ID
+COUNTRY_ID
+DATE_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID
+YEAR",TOTAL_POPULATION_ECONOMICALLY_ACTIVE,"AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID","AGE_ID
+COUNTRY_ID
+ECONOMIC_ACTIVITY_ID
+EDUCATION_LEVEL_ID
+GENDER_ID
+MUNICIPALITY_ID
+NATIONALITY_ID
+OCCUPATION_ID",Number of non-Qatari employees employed in the ICT sector.,عدد غير القطريين العاملين في قطاع الاتصالات وتقنية المعلومات
+103,Percentage of Students Who Have Completed University Education As a Percentage of Total Post-Secondary Students - Overall (%),Education,gold.MOEHE_FACT_UNIVERSITY_STUDENTS_COMPLETION_PERCENTAGE,"COUNTRY_ID
+DATE_ID
+GENDER
+GENDER_ID
+NATIONALITY
+RATIO_YEAR
+YEAR","RATIO
+STUDENTS_WHO_COMPLETED_POST_SECONDARY_EDUCATION
+STUDENTS_WHO_COMPLETED_UNIVERSITY_EDUCATION","COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY","COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY",Percentage of post-secondary students who completed university education.,نسبة الحاصلين على شهادة جامعية من إجمالي طلاب ما بعد المرحلة الثانوية
+103.1,Percentage of Students Who Have Completed University Education As a Percentage of Total Post-Secondary Students - Qatari (%),Education,gold.MOEHE_FACT_UNIVERSITY_STUDENTS_COMPLETION_PERCENTAGE,"COUNTRY_ID
+DATE_ID
+GENDER
+GENDER_ID
+NATIONALITY
+RATIO_YEAR
+YEAR","RATIO
+STUDENTS_WHO_COMPLETED_POST_SECONDARY_EDUCATION
+STUDENTS_WHO_COMPLETED_UNIVERSITY_EDUCATION","COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY","COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY",Percentage of Qatari post-secondary students who completed university education.,نسبة الطلاب القطريين الحاصلين على شهادة جامعية من إجمالي طلاب ما بعد المرحلة الثانوية
+103.2,Percentage of Students Who Have Completed University Education As a Percentage of Total Post-Secondary Students - Non Qatari (%),Education,gold.MOEHE_FACT_UNIVERSITY_STUDENTS_COMPLETION_PERCENTAGE,"COUNTRY_ID
+DATE_ID
+GENDER
+GENDER_ID
+NATIONALITY
+RATIO_YEAR
+YEAR","RATIO
+STUDENTS_WHO_COMPLETED_POST_SECONDARY_EDUCATION
+STUDENTS_WHO_COMPLETED_UNIVERSITY_EDUCATION","COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY","COUNTRY_ID
+GENDER
+GENDER_ID
+NATIONALITY",Percentage of non-Qatari post-secondary students who completed university education.,نسبة الطلاب غير القطريين الحاصلين على شهادة جامعية من إجمالي طلاب ما بعد المرحلة الثانوية
+105,% of licensed doctors employed in private sector,Healthcare and Social Services,gold.moph_fact_indicators,"DATE_ID
+GENDER_ID",VALUE,GENDER_ID,"GENDER_ID
+INDICATOR_ID",Percentage of licensed doctors employed in private healthcare facilities.,نسبة الأطباء المرخصين العاملين في منشآت الرعاية الصحية الخاصة
+106,Self-Sufficiency for Strategic Commodities,Agriculture and Livestock,gold.mom_fact_commodities_self_sufficiency,"COMMODITY
+DATE_ID","COMMODITY_LOCAL_PRODUCTION_METRIC_TON
+IMPORTS_METRIC_TON
+SELF_SUFFICIENCY_PERCENTAGE
+TOTAL_CONSUMPTION_METRIC_TON",COMMODITY,COMMODITY,Share of domestic demand for strategic commodities met through local production.,نسبة الطلب المحلي على السلع الاستراتيجية التي يتم تلبيتها عبر الإنتاج المحلي
+107,Minimum Reserve of Strategic Commodities,Agriculture and Livestock,gold.moci_fact_strategic_commodities_reserve,"DATE_ID
+GROUP_NAME_AR
+GROUP_NAME_EN
+SERIAL_NUMBER","GAP_PERIOD_MONTHS
+MAXIMUM_ALLOWED_STOCK
+SAFE_PERIOD_MONTHS
+STOCK_GAP
+SUFFICIENT_FOR_PERIOD_MONTHS
+TOTAL_STOCK","GROUP_NAME_AR
+GROUP_NAME_EN
+SERIAL_NUMBER","GROUP_NAME_AR
+GROUP_NAME_EN
+SERIAL_NUMBER",Minimum supply reserve of strategic commodities measured in months.,الحد الأدنى للاحتياطي المتاح من السلع الاستراتيجية مقاسًا بالأشهر
+108,Inflation (%),National Economy,gold.vw_npc_cpi_inflation,YEAR,"CURRENT_ANNUAL_CPI
+DIFFERENCE
+INFLATION_PERCENTAGE
+PREVIOUS_ANNUAL_CPI",,,Year-on-year change in consumer prices.,معدل التغير السنوي في أسعار المستهلك
+109,"Government Revenues (QAR, bn)",National Economy,gold.MOF_FACT_GOVERNMENT_REVENUES,"DATE_ID
+YEAR",TOTAL_REVENUE,,,Total government revenues from all sources.,إجمالي الإيرادات التي تحصل عليها الحكومة من جميع المصادر
+110,Public Debt as a Percentage of GDP (%),National Economy,gold.mof_fact_public_debt_as_percentage_of_gdp,"DATE_ID
+YEAR","Debt/GDP
+PUBLIC_DEBT",,,Central government debt as a percentage of GDP.,نسبة الدين العام إلى الناتج المحلي الإجمالي
+111,"Total Exports (Goods and Services) - (QAR, bn)",National Economy,gold.vw_npc_trade_total_exports,"DATE_ID
+QATAR_PORT_ID
+TRADE_COUNTRY_ID
+YEAR
+HS_CODE_ID",TOTAL_EXPORTS,"QATAR_PORT_ID
+TRADE_COUNTRY_ID
+HS_CODE_ID","QATAR_PORT_ID
+TRADE_COUNTRY_ID
+HS_CODE_ID",Total value of goods and services exported.,إجمالي قيمة صادرات السلع والخدمات
+112,"Trade Balance (Goods & Services) - (QAR, bn)",National Economy,gold.vw_npc_trade_balance,"DATE_ID
+YEAR",TRADE_BALANCE,,,Difference between total exports and total imports of goods and services.,الفرق بين إجمالي صادرات السلع والخدمات وإجمالي الواردات
+113,Occupancy Rate (%),Tourism,gold.QT_VW_OCCUPANCY_RATE,"DATE_ID
+MONTH
+YEAR","OCCUPANCY_RATE
+TOTAL_AVAILABLE_ROOMS
+TOTAL_ROOM_NIGHTS_SOLD",,,Percentage of available accommodation capacity that is occupied.,نسبة سعة الإقامة المتاحة التي تم إشغالها خلال فترة مرجعية
+113.1,Number of Available Hotel Rooms (Supply),Tourism,gold.QT_VW_AVAILABLE_HOTEL_ROOMS,"DATE_ID
+MONTH
+SECONDARY_SEGMENT_EN
+YEAR",TOTAL_AVAILABLE_ROOMS,SECONDARY_SEGMENT_EN,SECONDARY_SEGMENT_EN,Total number of hotel rooms available for sale.,إجمالي عدد الغرف الفندقية المعروضة للبيع
+115,Gross National Income,National Economy,gold.vw_npc_gdp_gni,"DATE_ID
+YEAR",GNI VALUE,,,Gross domestic income plus net income received from abroad.,إجمالي الدخل القومي بما في ذلك صافي الدخل المتأتي من الخارج
+116,National Budget,National Economy,gold.MOF_FACT_NATIONAL_BUDGET,"CATEGORY
+DATE_ID
+ITEM
+YEAR",VALUE,"CATEGORY
+ITEM","CATEGORY
+ITEM",Total government revenue and expenditure for the fiscal year.,إجمالي الإيرادات والنفقات المعتمدة في الميزانية العامة للدولة
