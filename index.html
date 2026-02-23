@@ -105,7 +105,7 @@
     }
     .main {
       display: grid;
-      grid-template-rows: auto auto auto minmax(180px, 44vh) auto minmax(200px, 1fr);
+      grid-template-rows: auto auto auto minmax(320px, 1fr);
       gap: 12px;
       min-height: 0;
       overflow: hidden;
@@ -252,6 +252,7 @@
       padding: 8px;
       overflow: auto;
       min-height: 0;
+      height: 100%;
     }
     #schemaSvg {
       width: 100%;
@@ -267,6 +268,54 @@
       min-height: 0;
       position: relative;
       background: #0f1620;
+      height: 100%;
+    }
+    .view-panel {
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      min-height: 0;
+      overflow: hidden;
+    }
+    .view-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 8px 10px 0;
+    }
+    .view-tab {
+      border: 1px solid var(--line);
+      border-bottom: 0;
+      border-radius: 8px 8px 0 0;
+      padding: 7px 12px;
+      background: #0f1620;
+      color: var(--ink-soft);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .view-tab.active {
+      background: #162331;
+      color: var(--ink);
+      border-color: #2f4358;
+    }
+    .view-meta {
+      padding: 8px 12px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+    }
+    .view-body {
+      min-height: 0;
+      overflow: hidden;
+    }
+    .view-pane {
+      display: none;
+      min-height: 0;
+      height: 100%;
+    }
+    .view-pane.active {
+      display: block;
     }
     table {
       width: 100%;
@@ -510,7 +559,7 @@
     @media (max-width: 980px) {
       .shell { grid-template-columns: 1fr; }
       .sidebar { min-height: 220px; }
-      .main { grid-template-rows: auto auto auto 260px auto minmax(220px, 1fr); }
+      .main { grid-template-rows: auto auto auto minmax(260px, 1fr); }
     }
   </style>
 </head>
@@ -551,15 +600,23 @@
 
       <section class="status panel" id="status">Initializing SQL engine...</section>
 
-      <section class="panel schema-wrap">
-        <svg id="schemaSvg" viewBox="0 0 1200 680" preserveAspectRatio="xMidYMid meet"></svg>
+      <section class="panel view-panel">
+        <div class="view-tabs">
+          <button class="view-tab active" id="tabResults" type="button">Results</button>
+          <button class="view-tab" id="tabSchema" type="button">Visualization</button>
+        </div>
+        <div class="view-meta muted" id="resultMeta">No query executed yet.</div>
+        <div class="view-body">
+          <div class="view-pane active" id="resultsPane">
+            <section class="result-wrap" id="resultWrap"></section>
+          </div>
+          <div class="view-pane" id="schemaPane">
+            <section class="schema-wrap">
+              <svg id="schemaSvg" viewBox="0 0 1200 680" preserveAspectRatio="xMidYMid meet"></svg>
+            </section>
+          </div>
+        </div>
       </section>
-
-      <section class="panel" style="padding: 8px 12px;">
-        <div class="muted" id="resultMeta">No query executed yet.</div>
-      </section>
-
-      <section class="panel result-wrap" id="resultWrap"></section>
     </main>
   </div>
   <div id="colMenu" class="col-menu-pop"></div>
@@ -584,9 +641,18 @@
     let autocompleteActiveIndex = -1;
     let resultState = { columns: [], rawValues: [], sortIndex: -1, sortDir: 'asc', valueFilters: {} };
     let menuState = null;
-    const APP_VERSION = "v1.8.0";
+    const APP_VERSION = "v1.9.0";
     const SEEN_VERSION_KEY = "duplexer_sql_explorer_seen_version";
     const RELEASE_NOTES = [
+      {
+        version: "v1.9.0",
+        date: "2026-02-23",
+        notes: [
+          "Added interchangeable Results/Visualization tabs to maximize workspace.",
+          "Fixed autocomplete interfering with adding new lines in SQL editor. Use Enter to add new lines. Use Tab to add the first suggestion.",
+          "Autocomplete now appends one space automatically after inserted suggestion."
+        ]
+      },
       {
         version: "v1.8.0",
         date: "2026-02-23",
@@ -623,6 +689,10 @@
     const statsEl = document.getElementById('stats');
     const resultWrapEl = document.getElementById('resultWrap');
     const resultMetaEl = document.getElementById('resultMeta');
+    const resultsPaneEl = document.getElementById('resultsPane');
+    const schemaPaneEl = document.getElementById('schemaPane');
+    const tabResultsEl = document.getElementById('tabResults');
+    const tabSchemaEl = document.getElementById('tabSchema');
     const sqlInputEl = document.getElementById('sqlInput');
     const tableSearchEl = document.getElementById('tableSearch');
     const columnSearchEl = document.getElementById('columnSearch');
@@ -634,10 +704,20 @@
     const whatsNewModalEl = document.getElementById('whatsNewModal');
     const closeWhatsNewEl = document.getElementById('closeWhatsNew');
     const releaseNotesEl = document.getElementById('releaseNotes');
+    let activeView = 'results';
 
     function setStatus(msg, isError = false) {
       statusEl.textContent = msg;
       statusEl.classList.toggle('error', isError);
+    }
+
+    function setActiveView(view) {
+      activeView = view === 'schema' ? 'schema' : 'results';
+      const showSchema = activeView === 'schema';
+      resultsPaneEl.classList.toggle('active', !showSchema);
+      schemaPaneEl.classList.toggle('active', showSchema);
+      tabResultsEl.classList.toggle('active', !showSchema);
+      tabSchemaEl.classList.toggle('active', showSchema);
     }
 
     function renderReleaseNotes() {
@@ -1161,7 +1241,7 @@
       const info = getTokenAtCursor(sqlInputEl.value, pos);
       const before = sqlInputEl.value.slice(0, info.start);
       const after = sqlInputEl.value.slice(info.end);
-      const insert = item.insertText;
+      const insert = `${item.insertText} `;
       sqlInputEl.value = before + insert + after;
       const newPos = before.length + insert.length;
       sqlInputEl.focus();
@@ -1446,6 +1526,7 @@
 
     document.getElementById('runQuery').onclick = () => {
       if (!db) return;
+      setActiveView('results');
       const q = normalizeQuery(sqlInputEl.value);
       if (!isReadOnlyQuery(q)) {
         setStatus('Blocked: only single SELECT/WITH/PRAGMA read queries are allowed.', true);
@@ -1470,14 +1551,21 @@
     };
 
     document.getElementById('browseSelected').onclick = () => {
-      if (selectedTable) browseTable(selectedTable);
+      if (selectedTable) {
+        setActiveView('results');
+        browseTable(selectedTable);
+      }
     };
 
     document.getElementById('clearResult').onclick = () => {
+      setActiveView('results');
       resultWrapEl.innerHTML = '';
       resultMetaEl.textContent = 'Result cleared.';
       setStatus('Ready.');
     };
+
+    tabResultsEl.onclick = () => setActiveView('results');
+    tabSchemaEl.onclick = () => setActiveView('schema');
 
     tableSearchEl.oninput = () => {
       renderTableList();
@@ -1499,12 +1587,14 @@
           setAutocompleteActive(autocompleteActiveIndex - 1);
           return;
         }
-        if (e.key === "Enter" || e.key === "Tab") {
-          if (!(e.ctrlKey || e.metaKey)) {
-            e.preventDefault();
-            applyAutocomplete(autocompleteItems[Math.max(0, autocompleteActiveIndex)]);
-            return;
-          }
+        if (e.key === "Enter" && !(e.ctrlKey || e.metaKey)) {
+          hideAutocomplete();
+          return;
+        }
+        if (e.key === "Tab" && !(e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          applyAutocomplete(autocompleteItems[Math.max(0, autocompleteActiveIndex)]);
+          return;
         }
         if (e.key === "Escape") {
           e.preventDefault();
