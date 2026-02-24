@@ -650,7 +650,8 @@
         notes: [
           "Added interchangeable Results/Visualization tabs to maximize workspace.",
           "Fixed autocomplete interfering with adding new lines in SQL editor. Use Enter to add new lines. Use Tab to add the first suggestion.",
-          "Autocomplete now appends one space automatically after inserted suggestion."
+          "Autocomplete now appends one space automatically after inserted suggestion.",
+          "Added robust SQL seed loading with progress and full post-load row-count verification."
         ]
       },
       {
@@ -767,6 +768,170 @@
       s = s.replace(/CREATE TABLE IF NOT EXISTS\s+`([^`]+)`/g, 'CREATE TABLE IF NOT EXISTS gold.`$1`');
       s = s.replace(/INSERT INTO\s+`([^`]+)`/g, 'INSERT INTO gold.`$1`');
       return s;
+    }
+
+    function splitSqlStatements(sql) {
+      const out = [];
+      let start = 0;
+      let inStr = false;
+      for (let i = 0; i < sql.length; i++) {
+        const ch = sql[i];
+        if (ch === "'") {
+          if (inStr && i + 1 < sql.length && sql[i + 1] === "'") {
+            i++;
+            continue;
+          }
+          inStr = !inStr;
+          continue;
+        }
+        if (!inStr && ch === ';') {
+          const stmt = sql.slice(start, i).trim();
+          if (stmt) out.push(stmt);
+          start = i + 1;
+        }
+      }
+      const tail = sql.slice(start).trim();
+      if (tail) out.push(tail);
+      return out;
+    }
+
+    function splitInsertIntoBatches(stmt, batchSize = 25) {
+      const m = stmt.match(/^(INSERT\s+INTO[\s\S]+?\bVALUES)\s*([\s\S]+)$/i);
+      if (!m) return [stmt];
+      const prefix = m[1];
+      const valuesPart = m[2].trim();
+      const tuples = [];
+      let inStr = false;
+      let depth = 0;
+      let start = -1;
+      for (let i = 0; i < valuesPart.length; i++) {
+        const ch = valuesPart[i];
+        if (ch === "'") {
+          if (inStr && i + 1 < valuesPart.length && valuesPart[i + 1] === "'") {
+            i++;
+            continue;
+          }
+          inStr = !inStr;
+          continue;
+        }
+        if (inStr) continue;
+        if (ch === '(') {
+          if (depth === 0) start = i;
+          depth++;
+          continue;
+        }
+        if (ch === ')') {
+          depth--;
+          if (depth === 0 && start >= 0) {
+            tuples.push(valuesPart.slice(start, i + 1).trim());
+            start = -1;
+          }
+        }
+      }
+      if (!tuples.length) return [stmt];
+      const parts = [];
+      for (let i = 0; i < tuples.length; i += batchSize) {
+        const batch = tuples.slice(i, i + batchSize).join(',\n  ');
+        parts.push(`${prefix}\n  ${batch}`);
+      }
+      return parts;
+    }
+
+    function extractInsertTableName(stmt) {
+      const m = stmt.match(/^INSERT\s+INTO\s+(?:gold\.)?`([^`]+)`/i);
+      return m ? m[1] : null;
+    }
+
+    function countInsertTuples(stmt) {
+      const m = stmt.match(/^(INSERT\s+INTO[\s\S]+?\bVALUES)\s*([\s\S]+)$/i);
+      if (!m) return 0;
+      const valuesPart = m[2].trim();
+      let tuples = 0;
+      let inStr = false;
+      let depth = 0;
+      for (let i = 0; i < valuesPart.length; i++) {
+        const ch = valuesPart[i];
+        if (ch === "'") {
+          if (inStr && i + 1 < valuesPart.length && valuesPart[i + 1] === "'") {
+            i++;
+            continue;
+          }
+          inStr = !inStr;
+          continue;
+        }
+        if (inStr) continue;
+        if (ch === '(' && depth === 0) tuples++;
+        if (ch === '(') depth++;
+        if (ch === ')') depth--;
+      }
+      return tuples;
+    }
+
+    async function execDumpSqlRobust(rawSql, onProgress = null) {
+      const normalized = normalizeDumpSql(rawSql);
+      const statements = splitSqlStatements(normalized);
+      const expectedByTable = {};
+      let expectedRows = 0;
+      let totalBatches = 0;
+      let executedBatches = 0;
+
+      for (const stmt of statements) {
+        if (!/^INSERT\s+INTO\b/i.test(stmt)) continue;
+        const table = extractInsertTableName(stmt);
+        const tupleCount = countInsertTuples(stmt);
+        if (table) expectedByTable[table] = (expectedByTable[table] || 0) + tupleCount;
+        expectedRows += tupleCount;
+        totalBatches += Math.max(1, splitInsertIntoBatches(stmt, 25).length);
+      }
+
+      let loadedRows = 0;
+      for (const stmt of statements) {
+        if (/^INSERT\s+INTO\b/i.test(stmt)) {
+          const table = extractInsertTableName(stmt);
+          const batches = splitInsertIntoBatches(stmt, 25);
+          for (const b of batches) {
+            db.exec(b);
+            loadedRows += countInsertTuples(b);
+            executedBatches++;
+            if (onProgress) {
+              onProgress({
+                phase: "loading",
+                loadedRows,
+                expectedRows,
+                executedBatches,
+                totalBatches,
+                table
+              });
+            }
+            if (executedBatches % 8 === 0) {
+              await new Promise(resolve => setTimeout(resolve, 0));
+            }
+          }
+        } else {
+          db.exec(stmt);
+        }
+      }
+
+      const mismatches = [];
+      for (const [table, expected] of Object.entries(expectedByTable)) {
+        const q = `SELECT COUNT(*) FROM gold.\`${table}\``;
+        const res = db.exec(q);
+        const actual = Number(res?.[0]?.values?.[0]?.[0] ?? 0);
+        if (actual !== expected) mismatches.push(`${table}: expected ${expected}, loaded ${actual}`);
+      }
+      if (mismatches.length) {
+        throw new Error(`Data load verification failed (${mismatches.length} tables): ${mismatches.slice(0, 5).join(' | ')}`);
+      }
+
+      if (onProgress) {
+        onProgress({
+          phase: "verified",
+          loadedRows: expectedRows,
+          expectedRows,
+          executedBatches: totalBatches,
+          totalBatches
+        });
+      }
     }
 
     function normalizeQuery(q) {
@@ -1511,7 +1676,14 @@
 
         const raw = document.getElementById('seedSql').textContent;
         setStatus('Loading SQL dump into in-browser database...');
-        db.exec(normalizeDumpSql(raw));
+        await execDumpSqlRobust(raw, (p) => {
+          if (p.phase === "loading") {
+            const pct = p.expectedRows > 0 ? Math.min(99, Math.floor((p.loadedRows / p.expectedRows) * 100)) : 0;
+            setStatus(`Loading data... ${pct}% (${p.loadedRows}/${p.expectedRows} rows)`);
+          } else if (p.phase === "verified") {
+            setStatus(`Data load verified (${p.loadedRows} rows). Finalizing...`);
+          }
+        });
 
         listTables();
         drawSchema();
