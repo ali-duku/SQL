@@ -1,4 +1,4 @@
-
+﻿
 #!/usr/bin/env python3
 """
 MySQL 5.7-first synthetic data generator for the schema in Schema.sql.
@@ -356,7 +356,7 @@ EN_AR_EXACT_MAP = {
     "Divorced": "مطلق",
     "Outpatient": "عيادات خارجية",
     "Emergency": "طوارئ",
-    "Inpatient": "تنويم",
+    "Inpatient": "مريض داخلي",
     "Revenue": "إيرادات",
     "Expenditure": "مصروفات",
     "Capital": "رأسمالي",
@@ -538,7 +538,7 @@ EN_AR_WORD_MAP = {
     "divorced": "مطلق",
     "outpatient": "عيادات خارجية",
     "emergency": "طوارئ",
-    "inpatient": "تنويم",
+    "inpatient": "مريض داخلي",
     "revenue": "إيرادات",
     "expenditure": "مصروفات",
     "capital": "رأسمالي",
@@ -587,6 +587,36 @@ EN_AR_WORD_MAP = {
     "government": "حكومي",
     "health": "الصحة",
     "economic": "اقتصادي",
+    "real": "حقيقي",
+    "estate": "عقاري",
+    "total": "إجمالي",
+    "transaction": "معاملة",
+    "transactions": "معاملات",
+    "volume": "حجم",
+    "global": "عالمي",
+    "competitiveness": "تنافسية",
+    "non": "غير",
+    "hydrocarbon": "هيدروكربوني",
+    "revenues": "إيرادات",
+    "governmental": "حكومي",
+    "complexity": "تعقيد",
+    "regulatory": "تنظيمي",
+    "ratio": "نسبة",
+    "deals": "صفقات",
+    "startups": "شركات ناشئة",
+    "obesity": "سمنة",
+    "active": "نشط",
+    "investments": "استثمارات",
+    "liner": "خطّي",
+    "shipping": "شحن",
+    "connectivity": "ترابط",
+    "air": "جوي",
+    "transport": "نقل",
+    "freight": "شحن",
+    "logistics": "لوجستيات",
+    "performance": "أداء",
+    "foreign": "أجنبي",
+    "currency": "عملة",
     "diversification": "تنويع",
     "human": "بشري",
     "indicator": "مؤشر",
@@ -597,6 +627,12 @@ EN_AR_WORD_MAP = {
     "unit": "وحدة",
     "source": "مصدر",
     "frequency": "تكرار",
+    "time": "زمن",
+    "period": "فترة",
+    "year": "سنة",
+    "quarter": "ربع",
+    "month": "شهر",
+    "kpi": "مؤشر الأداء",
     "annual": "سنوي",
     "quarterly": "ربع سنوي",
     "monthly": "شهري",
@@ -638,7 +674,171 @@ EN_AR_WORD_MAP = {
 }
 
 ARABIC_FILLER_VALUES = {"عام", "فئة", "نوع", "قيمة"}
-PLACEHOLDER_RE = re.compile(r"^(Status \d+|Usage \d+|Type [A-Z]|Category [A-Z]|Item \d+|Indicator \d+|Academic Stage \d+)$")
+ARABIC_DISALLOWED_VALUES = ARABIC_FILLER_VALUES | {"وصف عربي", "-", "—"}
+PLACEHOLDER_RE = re.compile(r"(?i)^(Status \d+|Usage \d+|Type [A-Z]|Category [A-Z]|Item \d+|Indicator \d+|Academic Stage \d+|Field \d+|Stage \d+)$")
+
+SEMANTIC_AR_FALLBACK = {
+    "name": "اسم عربي دقيق",
+    "description": "وصف عربي دقيق",
+    "definition": "تعريف دقيق",
+    "sector": "قطاع محدد",
+    "source": "جهة مصدر",
+    "frequency": "دورية منتظمة",
+    "unit": "وحدة قياس",
+    "category": "تصنيف محدد",
+    "generic": "نص عربي موثوق",
+}
+
+PROTECTED_AR_BANNED_VALUES = ARABIC_DISALLOWED_VALUES | {"اسم معتمد", "وصف تفصيلي"}
+PROTECTED_AR_COLUMNS = {
+    "INDICATOR_NAME_AR",
+    "INDICATOR_DEFINITION_AR",
+    "QDTI_DESCRIPTION_AR",
+    "INDICATOR_SECTOR_AR",
+    "SOURCE_TYPE_AR",
+    "FREQUENCY_OF_MEASUREMENT_AR",
+    "INDICATOR_SOURCE_ENTITY_AR",
+    "PILLAR_MAPPING_AR",
+    "OUTCOME_MAPPING_AR",
+    "NATIONAL_DEVELOPMENT_STRATEGY_SECTOR_AR",
+    "NATIONAL_DEVELOPMENT_STRATEGY_CLUSTER_AR",
+    "TARGET_VALUE_AR",
+    "INDICATOR_MEASUREMENT_UNIT_AR",
+    "LATEST_VALUE_MEASUREMENT_UNIT_AR",
+    "EDUCATION_LEVEL_0_AR",
+    "EDUCATION_LEVEL_1_AR",
+    "SKILL_LEVEL_AR",
+    "VISIT_TYPE_AR",
+}
+
+COLUMN_SPECIFIC_AR_TEMPLATES = {
+    "INDICATOR_NAME_AR": "مسمى المؤشر",
+    "QDTI_DESCRIPTION_AR": "وصف المؤشر التفصيلي",
+    "INDICATOR_DEFINITION_AR": "تعريف المؤشر",
+    "INDICATOR_SECTOR_AR": "القطاع المؤشري",
+    "SOURCE_TYPE_AR": "نوع المصدر",
+    "FREQUENCY_OF_MEASUREMENT_AR": "دورية القياس",
+    "INDICATOR_SOURCE_ENTITY_AR": "الجهة المصدرة للبيانات",
+    "PILLAR_MAPPING_AR": "مواءمة الركيزة",
+    "OUTCOME_MAPPING_AR": "مواءمة المخرجات",
+    "NATIONAL_DEVELOPMENT_STRATEGY_SECTOR_AR": "قطاع الاستراتيجية الوطنية",
+    "NATIONAL_DEVELOPMENT_STRATEGY_CLUSTER_AR": "عنقود الاستراتيجية الوطنية",
+    "TARGET_VALUE_AR": "القيمة المستهدفة",
+    "INDICATOR_MEASUREMENT_UNIT_AR": "وحدة قياس المؤشر",
+    "LATEST_VALUE_MEASUREMENT_UNIT_AR": "وحدة قياس آخر قيمة",
+    "EDUCATION_LEVEL_0_AR": "مستوى تعليمي أساسي",
+    "EDUCATION_LEVEL_1_AR": "مستوى تعليمي متقدم",
+    "SKILL_LEVEL_AR": "مستوى المهارة",
+}
+
+CONTROLLED_TEXT_ALLOWLIST_PATTERNS = (
+    re.compile(r"(?i)^Q[1-4]$"),
+    re.compile(r"(?i)^Grade\s\d+$"),
+    re.compile(r"(?i)^Tier\s\d+$"),
+    re.compile(r"^الربع\s[1-4]$"),
+    re.compile(r"^الصف\s\d+$"),
+)
+
+INDICATOR_NAME_AR_CANONICAL_MAP_RAW = {
+    "Air Transport, Freight (million-ton-km)": "الشحن الجوي (مليون طن-كم)",
+    "B-READY index (rank)": "ترتيب مؤشر جاهزية بيئة الأعمال",
+    "Cost per Student (QAR, K-12 public schools) - (QAR, k)": "تكلفة الطالب الواحد في المدارس الحكومية (رياض الأطفال حتى الصف الثاني عشر) بالألف ريال قطري",
+    "Credit Rating (minimum baseline)": "التصنيف الائتماني (الحد الأدنى المرجعي)",
+    "Global Food Security Index (GFSI)": "مؤشر الأمن الغذائي العالمي",
+    "Government Revenues (QAR, bn)": "الإيرادات الحكومية (مليار ريال قطري)",
+    "IATA (Air Connectivity) Index": "مؤشر الاتحاد الدولي للنقل الجوي (ترابط جوي)",
+    "Liner Shipping Connectivity Index Score": "درجة مؤشر ترابط الشحن البحري المنتظم",
+    "Logistics Performance Index (LPI) Ranking": "ترتيب مؤشر الأداء اللوجستي",
+    "MSCI All Country World Index Ranking": "ترتيب المؤشر العالمي لجميع الدول",
+    "Minimum Reserve of Strategic Commodities": "الحد الأدنى للاحتياطي من السلع الاستراتيجية",
+    "NTM Frequency Ratio (%)": "نسبة تكرار التدابير غير الجمركية (%)",
+    "National Budget": "الميزانية الوطنية",
+    "Non-Hydrocarbon Government Revenue as a Percentage of Non-Hydrocarbon GDP (%)": "الإيرادات الحكومية غير الهيدروكربونية كنسبة من الناتج المحلي الإجمالي غير الهيدروكربوني (%)",
+    "Non-Hydrocarbon Government Revenues as a Percentage of Total Government Revenues (%)": "الإيرادات الحكومية غير الهيدروكربونية كنسبة من إجمالي الإيرادات الحكومية (%)",
+    "Number of Medical Tourists": "عدد السياح العلاجيين",
+    "Obesity Rate": "معدل السمنة",
+    "Out-of-pocket Expenditure of Current Health Expenditure (%)": "الإنفاق الصحي المباشر من الجيب كنسبة من إجمالي الإنفاق الصحي (%)",
+    "Percentage of Online, End-to-end Public Services (%)": "نسبة الخدمات العامة الإلكترونية المتكاملة من البداية إلى النهاية (%)",
+    "Percentage of Qatari Students Out of Total Number of Students in Public Schools (K-12) (%)": "نسبة الطلاب القطريين من إجمالي عدد الطلاب في المدارس الحكومية (رياض الأطفال حتى الصف الثاني عشر) (%)",
+    "Percentage of Qataris enrolled in Government Schools out of the Total Number of Qataris in State Schools (public and private)": "نسبة القطريين الملتحقين بالمدارس الحكومية من إجمالي القطريين في مدارس الدولة (الحكومية والخاصة)",
+    "Percentage of Students Who Have Completed University Education As a Percentage of Total Post-Secondary Students - Non Qatari (%)": "نسبة الطلاب غير القطريين الذين أكملوا التعليم الجامعي من إجمالي طلاب ما بعد الثانوي",
+    "Percentage of Students Who Have Completed University Education As a Percentage of Total Post-Secondary Students - Overall (%)": "نسبة الطلاب الذين أكملوا التعليم الجامعي من إجمالي طلاب ما بعد الثانوي - الإجمالي",
+    "Percentage of Students Who Have Completed University Education As a Percentage of Total Post-Secondary Students - Qatari (%)": "نسبة الطلاب القطريين الذين أكملوا التعليم الجامعي من إجمالي طلاب ما بعد الثانوي",
+    "Physically Active": "معدل النشاط البدني",
+    "Private Expenditure on Health as % of Total Health Expenditure": "الإنفاق الخاص على الصحة كنسبة من إجمالي الإنفاق الصحي",
+    "Public Debt as a Percentage of GDP (%)": "الدين العام كنسبة من الناتج المحلي الإجمالي (%)",
+    "Qatar PISA Ranking": "ترتيب قطر في اختبار بيزا",
+    "Qatar's Ranking in the Economic Complexity Index": "ترتيب قطر في مؤشر التعقيد الاقتصادي",
+    "Qatar's Ranking in the Global Competitiveness Index": "ترتيب قطر في مؤشر التنافسية العالمية",
+    "Qataris Graduating from STEM (% of all Qatari graduates)": "نسبة القطريين الخريجين من تخصصات العلوم والتقنية والهندسة والرياضيات من إجمالي الخريجين القطريين",
+    "Ranking in the Global Cybersecurity Index (GCI)": "ترتيب قطر في المؤشر العالمي للأمن السيبراني",
+    "Ranking in the Network Readiness Index (NRI)": "ترتيب قطر في مؤشر الجاهزية الشبكية",
+    "Ratio of Teachers to Admin Staff (K-12 public schools), Overall": "نسبة المعلمين إلى الكادر الإداري في المدارس الحكومية (رياض الأطفال حتى الصف الثاني عشر) - الإجمالي",
+    "Ratio of Teachers to Students in Public Schools (K-12 Public Schools)": "نسبة المعلمين إلى الطلاب في المدارس الحكومية (رياض الأطفال حتى الصف الثاني عشر)",
+    "Real Estate Total Transaction Volume (QAR)": "إجمالي حجم معاملات العقارات (ريال قطري)",
+    "Regulatory Quality Index (Percentile Rank)": "مؤشر جودة التنظيم (الرتبة المئينية)",
+    "Self-Sufficiency for Strategic Commodities": "الاكتفاء الذاتي للسلع الاستراتيجية",
+    "Share of Qatari Teachers %": "نسبة المعلمين القطريين (%)",
+    "Time to Export (Hrs)": "زمن التصدير (ساعات)",
+    "Time to Import (Hrs)": "زمن الاستيراد (ساعات)",
+    "Total Expenditure on Health Services from Medical Tourism": "إجمالي الإنفاق على الخدمات الصحية من السياحة العلاجية",
+    "Total Investments into Sector (QAR, bn)": "إجمالي الاستثمارات في القطاع (مليار ريال قطري)",
+    "Value of VC deals directed to Qatar-based start-ups (as a % of GDP)": "قيمة صفقات رأس المال الجريء الموجهة إلى الشركات الناشئة في قطر (% من الناتج المحلي الإجمالي)",
+}
+
+EDUCATION_AR_MAP = {
+    "Primary": "ابتدائي",
+    "Intermediate": "إعدادي",
+    "Secondary": "ثانوي",
+    "Post-secondary": "ما بعد الثانوي",
+    "Academic": "أكاديمي",
+    "Technical": "تقني",
+    "Vocational": "مهني",
+    "University": "جامعي",
+    "Foundational": "تأسيسي",
+    "Applied": "تطبيقي",
+    "Advanced": "متقدم",
+}
+
+MOCI_FIRM_EN_AR = [
+    ("Qatar Industrial Co.", "شركة قطر الصناعية"),
+    ("Doha Manufacturing Group", "مجموعة الدوحة للتصنيع"),
+    ("Gulf Precision Works", "مصانع الخليج الدقيقة"),
+    ("National Processing LLC", "الوطنية للتجهيز ذ.م.م"),
+    ("Al Watania Metal Works", "الوطنية للأعمال المعدنية"),
+    ("Pearl Food Industries", "صناعات اللؤلؤ الغذائية"),
+]
+
+MOCI_ISIC2_EN_AR = [
+    ("Food products manufacturing", "تصنيع المنتجات الغذائية"),
+    ("Chemical products manufacturing", "تصنيع المنتجات الكيميائية"),
+    ("Rubber and plastics manufacturing", "تصنيع المطاط والبلاستيك"),
+    ("Basic metals manufacturing", "تصنيع المعادن الأساسية"),
+    ("Fabricated metal products", "صناعة المنتجات المعدنية المشكلة"),
+]
+
+MOCI_ISIC6_EN_AR = [
+    ("Dairy products processing", "تصنيع منتجات الألبان"),
+    ("Pharmaceutical preparations", "تحضير المستحضرات الدوائية"),
+    ("Plastic packaging materials", "تصنيع مواد التغليف البلاستيكية"),
+    ("Iron structures manufacturing", "تصنيع الهياكل الحديدية"),
+    ("Industrial valves production", "إنتاج الصمامات الصناعية"),
+]
+
+INDICATOR_AR_SOURCE_COLUMNS = {
+    "INDICATOR_SECTOR_AR": "INDICATOR_SECTOR",
+    "SOURCE_TYPE_AR": "SOURCE_TYPE",
+    "FREQUENCY_OF_MEASUREMENT_AR": "FREQUENCY_OF_MEASUREMENT",
+    "INDICATOR_SOURCE_ENTITY_AR": "INDICATOR_SOURCE_ENTITY",
+    "PILLAR_MAPPING_AR": "PILLAR_MAPPING",
+    "OUTCOME_MAPPING_AR": "OUTCOME_MAPPING",
+    "NATIONAL_DEVELOPMENT_STRATEGY_SECTOR_AR": "NATIONAL_DEVELOPMENT_STRATEGY_SECTOR",
+    "NATIONAL_DEVELOPMENT_STRATEGY_CLUSTER_AR": "NATIONAL_DEVELOPMENT_STRATEGY_CLUSTER",
+    "TARGET_VALUE_AR": "TARGET_VALUE",
+    "INDICATOR_MEASUREMENT_UNIT_AR": "INDICATOR_MEASUREMENT_UNIT",
+    "LATEST_VALUE_MEASUREMENT_UNIT_AR": "LATEST_VALUE_MEASUREMENT_UNIT",
+    "QDTI_DESCRIPTION_AR": "QDTI_DESCRIPTION_EN",
+}
 
 CURATED_DOMAINS: Dict[str, List[str]] = {
     "STATUS_IN_EMPLOYMENT": ["Employed", "Unemployed", "Not in labor force"],
@@ -650,6 +850,7 @@ CURATED_DOMAINS: Dict[str, List[str]] = {
     "PROPERTY_TYPE": ["Residential", "Commercial", "Industrial", "Mixed Use"],
     "OCCUPATION": ["Managers", "Professionals", "Technicians", "Service Workers", "Clerical"],
     "RATING": ["AAA", "AA+", "AA", "AA-", "A+", "A", "A-", "BBB+", "BBB", "BBB-"],
+    "RATING_LONG_TERM": ["AAA", "AA+", "AA", "AA-", "A+", "A", "A-", "BBB+", "BBB", "BBB-"],
     "TIER_PERFORMANCE": ["Tier 1", "Tier 2", "Tier 3", "Tier 4"],
     "TIER_RANK": ["Top quartile", "Upper middle", "Lower middle", "Bottom quartile"],
     "ENTITY": ["Government Entity", "Private Entity", "Public Institution", "International Organization"],
@@ -658,6 +859,9 @@ CURATED_DOMAINS: Dict[str, List[str]] = {
     "ACADEMIC_STAGE": [f"Grade {i}" for i in range(1, 13)],
     "ACTIVITY_TYPE": ["Manufacturing", "Trade", "Services", "Tourism", "Logistics"],
     "FIRM_STAGE": ["Startup", "Growth", "Mature", "Expansion"],
+    "KPI_TIME_PERIOD": ["Annual", "Quarterly", "Monthly", "Year-to-date"],
+    "ISIC2_CODE": ["C10", "C20", "C22", "C24", "C25"],
+    "ISIC6_CODE": ["C105010", "C201120", "C222030", "C241100", "C251210"],
 }
 
 BUDGET_ITEMS_BY_CATEGORY: Dict[str, List[str]] = {
@@ -715,6 +919,7 @@ class SyntheticGenerator:
             for c in tmeta.column_names:
                 self.null_rates[(tname, c)] = random.uniform(args.null_rate_min, args.null_rate_max)
         self.table_pair_cache: Dict[str, List[Tuple[str, str]]] = {}
+        self.unmapped_indicator_name_keys: set = set()
         self.translation_protected_cols: Dict[str, set] = {}
         for tname, tmeta in tables.items():
             cols = set(tmeta.column_names)
@@ -733,7 +938,65 @@ class SyntheticGenerator:
                 if (c + "_AR") in cols:
                     protected.add(c)
             self.translation_protected_cols[tname] = protected
+        self.indicator_name_ar_canonical_map = {
+            self.normalize_indicator_name_key(en): ar for en, ar in INDICATOR_NAME_AR_CANONICAL_MAP_RAW.items()
+        }
         self.column_domains = self.build_column_domains_from_sources()
+        self.sanitize_column_domains()
+
+    @staticmethod
+    def normalize_indicator_name_key(value: object) -> str:
+        s = "" if value is None else str(value).strip().lower()
+        if not s:
+            return ""
+        s = re.sub(r"[’`]", "'", s)
+        s = re.sub(r"[–—]", "-", s)
+        s = re.sub(r"\s+", " ", s)
+        return s.strip()
+
+    @staticmethod
+    def is_valid_indicator_name_ar(value: object) -> bool:
+        s = "" if value is None else str(value).strip()
+        if not s:
+            return False
+        if s in {"مسمى المؤشر", "اسم معتمد"}:
+            return False
+        if re.search(r"[A-Za-z]", s):
+            return False
+        if re.search(r"[,\-]{2,}|\(\)|\[\]|\{\}", s):
+            return False
+        if not re.search(r"[\u0600-\u06FF]", s):
+            return False
+        return True
+
+    def resolve_indicator_name_ar(self, en_name: object, metric_hint: Optional[dict] = None, record_missing: bool = True) -> Optional[str]:
+        metric_ar = self.metric_get(metric_hint if isinstance(metric_hint, dict) else {}, "Indicator SCEAI Name AR", "Indicator Name AR")
+        if self.is_valid_indicator_name_ar(metric_ar):
+            return str(metric_ar).strip()
+        key = self.normalize_indicator_name_key(en_name)
+        if not key:
+            return None
+        mapped = self.indicator_name_ar_canonical_map.get(key)
+        if mapped and self.is_valid_indicator_name_ar(mapped):
+            return mapped
+        if record_missing:
+            self.unmapped_indicator_name_keys.add(key)
+        return None
+
+    def sanitize_column_domains(self) -> None:
+        strict_curated_keys = {"KPI_TIME_PERIOD", "RATING_LONG_TERM", "ISIC2_CODE", "ISIC6_CODE", "FIRM_STAGE"}
+        for key, vals in list(self.column_domains.items()):
+            cleaned = []
+            for v in vals:
+                s = str(v).strip()
+                if not s or self.is_placeholder_text(s):
+                    continue
+                cleaned.append(s)
+            if key in strict_curated_keys:
+                cleaned = [v for v in CURATED_DOMAINS.get(key, []) if not self.is_placeholder_text(v)]
+            elif not cleaned and key in CURATED_DOMAINS:
+                cleaned = [v for v in CURATED_DOMAINS[key] if not self.is_placeholder_text(v)]
+            self.column_domains[key] = sorted(dict.fromkeys(cleaned))
 
     @staticmethod
     def split_option_values(value: str) -> List[str]:
@@ -829,23 +1092,97 @@ class SyntheticGenerator:
                 return s
         return None
 
-    def translate_en_to_ar(self, value: object) -> str:
+    def semantic_role_for_column(self, col_name: Optional[str]) -> str:
+        c = (col_name or "").upper()
+        if "NAME" in c:
+            return "name"
+        if "DEFINITION" in c:
+            return "definition"
+        if "DESCRIPTION" in c:
+            return "description"
+        if "SECTOR" in c:
+            return "sector"
+        if "SOURCE" in c:
+            return "source"
+        if "FREQUENCY" in c:
+            return "frequency"
+        if "UNIT" in c:
+            return "unit"
+        if any(k in c for k in ("TYPE", "CATEGORY", "GROUP", "STAGE")):
+            return "category"
+        return "generic"
+
+    def semantic_ar_fallback(self, semantic_role: Optional[str] = None, col_name: Optional[str] = None) -> str:
+        role = semantic_role or self.semantic_role_for_column(col_name)
+        return SEMANTIC_AR_FALLBACK.get(role, SEMANTIC_AR_FALLBACK["generic"])
+
+    @staticmethod
+    def is_allowlisted_numbered_text(value: str) -> bool:
+        s = value.strip()
+        return any(pat.fullmatch(s) for pat in CONTROLLED_TEXT_ALLOWLIST_PATTERNS)
+
+    @staticmethod
+    def is_protected_ar_column(col_name: Optional[str]) -> bool:
+        return (col_name or "").upper() in PROTECTED_AR_COLUMNS
+
+    def protected_ar_template(self, col_name: Optional[str], semantic_role: Optional[str] = None) -> str:
+        c = (col_name or "").upper()
+        if c in COLUMN_SPECIFIC_AR_TEMPLATES:
+            return COLUMN_SPECIFIC_AR_TEMPLATES[c]
+        role = semantic_role or self.semantic_role_for_column(col_name)
+        return SEMANTIC_AR_FALLBACK.get(role, "نص عربي موثوق")
+
+    def is_placeholder_text(self, value: object) -> bool:
+        s = "" if value is None else str(value).strip()
+        if not s:
+            return True
+        if self.is_allowlisted_numbered_text(s):
+            return False
+        if PLACEHOLDER_RE.match(s):
+            return True
+        if s in ARABIC_DISALLOWED_VALUES:
+            return True
+        if re.fullmatch(r"(?i)(indicator|field|stage|status|usage|type|category|item)\s+\d+", s):
+            return True
+        if re.fullmatch(r"(?i)[A-Za-z][A-Za-z0-9_ ]*\s\d+$", s) and not self.is_allowlisted_numbered_text(s):
+            return True
+        if re.fullmatch(r"(?i).+\s\d+$", s) and not self.is_allowlisted_numbered_text(s):
+            return True
+        return False
+
+    def translate_en_to_ar_detailed(self, value: object, table: Optional[str] = None, col: Optional[str] = None, semantic_role: Optional[str] = None) -> Tuple[str, str]:
         if value is None:
-            return ""
+            return "", "empty"
         text = str(value).strip()
         if not text:
-            return ""
+            return "", "empty"
+        protected = self.is_protected_ar_column(col)
+        if re.search(r"[\u0600-\u06FF]", text) and not re.search(r"[A-Za-z]", text):
+            if text in ARABIC_DISALLOWED_VALUES:
+                return self.semantic_ar_fallback(semantic_role, col), "semantic_fallback"
+            return text, "already_ar"
         if text in EN_AR_EXACT_MAP:
-            return EN_AR_EXACT_MAP[text]
+            return EN_AR_EXACT_MAP[text], "exact"
+
+        table_lower = (table or "").lower()
+        col_upper = (col or "").upper()
+        if table_lower == "dim_education_level" and col_upper in {"EDUCATION_LEVEL_0_AR", "EDUCATION_LEVEL_1_AR", "SKILL_LEVEL_AR"} and text in EDUCATION_AR_MAP:
+            return EDUCATION_AR_MAP[text], "column_map"
+        if table_lower == "hmc_dim_visit_type" and col_upper == "VISIT_TYPE_AR":
+            visit_map = {"Outpatient": "عيادات خارجية", "Emergency": "طوارئ", "Inpatient": "مريض داخلي"}
+            if text in visit_map:
+                return visit_map[text], "column_map"
+        if table_lower == "moci_fact_manufacturing_sector_total_investments":
+            if col_upper == "FIRM_NAME_AR" and text in dict(MOCI_FIRM_EN_AR):
+                return dict(MOCI_FIRM_EN_AR)[text], "column_map"
+            if col_upper == "ISIC2_CODE_DESCRIPTION_AR" and text in dict(MOCI_ISIC2_EN_AR):
+                return dict(MOCI_ISIC2_EN_AR)[text], "column_map"
+            if col_upper == "ISIC6_CODE_DESCRIPTION_AR" and text in dict(MOCI_ISIC6_EN_AR):
+                return dict(MOCI_ISIC6_EN_AR)[text], "column_map"
 
         tokens = re.split(r"(\W+)", text)
         out: List[str] = []
-        translit = {
-            "a": "ا", "b": "ب", "c": "ك", "d": "د", "e": "ي", "f": "ف", "g": "ج", "h": "ه",
-            "i": "ي", "j": "ج", "k": "ك", "l": "ل", "m": "م", "n": "ن", "o": "و", "p": "ب",
-            "q": "ق", "r": "ر", "s": "س", "t": "ت", "u": "و", "v": "ف", "w": "و", "x": "كس",
-            "y": "ي", "z": "ز",
-        }
+        unknown_alpha = False
         for tok in tokens:
             if not tok:
                 continue
@@ -853,20 +1190,31 @@ class SyntheticGenerator:
             if key in EN_AR_WORD_MAP:
                 out.append(EN_AR_WORD_MAP[key])
             elif re.fullmatch(r"[A-Za-z_]+", tok):
-                out.append("".join(translit.get(ch, "") for ch in key if ch.isalpha()) or "قيمة")
+                unknown_alpha = True
+                out.append("" if protected else tok)
             else:
                 out.append(tok)
         translated = "".join(out).strip()
-        if re.fullmatch(r"[\d\.\,\-\+\%\s/]+", translated):
-            return translated
-        if not translated or translated in ARABIC_FILLER_VALUES:
-            return "عام"
-        if re.search(r"[A-Za-z]", translated) or not re.search(r"[\u0600-\u06FF]", translated):
-            return "عام"
-        return translated if translated else "عام"
+        if translated and re.search(r"[\u0600-\u06FF]", translated) and (not unknown_alpha or protected):
+            return translated, "token_map"
+        if re.fullmatch(r"[\d\.\,\-\+\%\s/]+", text):
+            return text, "token_map"
+        return self.semantic_ar_fallback(semantic_role, col), "semantic_fallback"
+
+    def translate_en_to_ar(self, value: object) -> str:
+        translated, _ = self.translate_en_to_ar_detailed(value)
+        return translated
 
     def default_english_for_pair(self, col_name: str) -> str:
         c = col_name.upper()
+        if c == "KPI_TIME_PERIOD":
+            return random.choice(self.column_domains.get("KPI_TIME_PERIOD", CURATED_DOMAINS["KPI_TIME_PERIOD"]))
+        if any(k in c for k in ("MOODY_FITCH_LONG_TERM", "SP_FITCH_LONG_TERM", "SP_LT_FOREIGN_CURRENCY")):
+            return random.choice(self.column_domains.get("RATING_LONG_TERM", CURATED_DOMAINS["RATING_LONG_TERM"]))
+        if c in ("ISIC2_CODE", "ISIC6_CODE"):
+            return random.choice(self.column_domains.get(c, CURATED_DOMAINS[c]))
+        if c == "FIRM_STAGE":
+            return random.choice(self.column_domains.get("FIRM_STAGE", CURATED_DOMAINS["FIRM_STAGE"]))
         if "COUNTRY_NAME" in c:
             return random.choice(self.translation_safe_choices["COUNTRY_NAME"])
         if "NATIONALITY" in c:
@@ -918,15 +1266,47 @@ class SyntheticGenerator:
         if "SOURCE" in c:
             return random.choice(self.column_domains.get("SOURCE_ENTITY", ["Source A", "Source B"]))
         if "DESCRIPTION" in c or "DEFINITION" in c:
-            return "Descriptive metadata"
-        return "Standard"
+            return random.choice(["Policy description", "Operational definition", "Analytical note"])
+        return "Reference Value"
 
     @staticmethod
     def is_controlled_column(col_name: str) -> bool:
         c = col_name.upper()
         if c.endswith("_EN") or c.endswith("_AR"):
             return True
-        if any(k in c for k in ["STATUS", "USAGE", "OCCUPATION", "INCOME_GROUP", "MARKET_TYPE", "PROPERTY_TYPE", "RATING", "TIER", "REGION", "CATEGORY", "TYPE", "GROUP", "SECTOR", "ITEM", "NATIONALITY", "GENDER", "DESCRIPTION", "DEFINITION", "SOURCE", "ACADEMIC_STAGE", "INDICATOR"]):
+        if any(
+            k in c
+            for k in [
+                "STATUS",
+                "USAGE",
+                "OCCUPATION",
+                "INCOME_GROUP",
+                "MARKET_TYPE",
+                "PROPERTY_TYPE",
+                "RATING",
+                "LONG_TERM",
+                "FOREIGN_CURRENCY",
+                "TIER",
+                "REGION",
+                "CATEGORY",
+                "TYPE",
+                "GROUP",
+                "SECTOR",
+                "ITEM",
+                "NATIONALITY",
+                "GENDER",
+                "DESCRIPTION",
+                "DEFINITION",
+                "SOURCE",
+                "ACADEMIC_STAGE",
+                "INDICATOR",
+                "KPI",
+                "TIME_PERIOD",
+                "FIRM_STAGE",
+                "ISIC2_CODE",
+                "ISIC6_CODE",
+            ]
+        ):
             return True
         if any(k in c for k in ["RATIO", "SCORE", "RANK", "GDP_PER_CAPITA", "POPULATION", "VALUE"]) and not c.endswith("_ID"):
             return True
@@ -977,6 +1357,10 @@ class SyntheticGenerator:
             return random.choice(self.column_domains.get("TRADE_TYPE", CURATED_DOMAINS["TRADE_TYPE"]))
         if c == "ACADEMIC_STAGE":
             return random.choice(self.column_domains.get("ACADEMIC_STAGE", CURATED_DOMAINS["ACADEMIC_STAGE"]))
+        if c == "KPI_TIME_PERIOD":
+            return random.choice(self.column_domains.get("KPI_TIME_PERIOD", CURATED_DOMAINS["KPI_TIME_PERIOD"]))
+        if any(k in c for k in ("MOODY_FITCH_LONG_TERM", "SP_FITCH_LONG_TERM", "SP_LT_FOREIGN_CURRENCY")):
+            return random.choice(self.column_domains.get("RATING_LONG_TERM", CURATED_DOMAINS["RATING_LONG_TERM"]))
         if c == "ENTITY_EN":
             return random.choice(self.column_domains.get("ENTITY", CURATED_DOMAINS["ENTITY"]))
         if c in ("ITEM", "ITEM_EN") and table not in ("mof_fact_national_budget", "mof_fact_return_on_treasury"):
@@ -997,10 +1381,12 @@ class SyntheticGenerator:
             return random.choice(self.translation_safe_choices["REGION"])
         if c.startswith("LPI_") and c.endswith("GROUPED_RANK"):
             return random.choice(self.column_domains.get("TIER_RANK", ["Rank 1", "Rank 2", "Rank 3", "Rank 4"]))
-        if c in ("KPI_VALUE", "KPI_TIME_PERIOD"):
-            return random.choice(["Annual", "Quarterly", "Monthly", "Stable", "Improving", "Declining"])
+        if c == "KPI_TIME_PERIOD":
+            return random.choice(self.column_domains.get("KPI_TIME_PERIOD", CURATED_DOMAINS["KPI_TIME_PERIOD"]))
+        if c == "KPI_VALUE":
+            return random.choice(["Index Value", "Percentage Value", "Composite Value", "Baseline Value"])
         if "DESCRIPTION" in c or "DEFINITION" in c:
-            return "General description"
+            return random.choice(["Policy description", "Operational definition", "Analytical note"])
         if "SOURCE" in c:
             return random.choice(self.column_domains.get("SOURCE_ENTITY", ["Source A", "Source B"]))
         if table == "intl_fact_out_of_pocket_expenditure" and c == "INDICATOR":
@@ -1010,24 +1396,62 @@ class SyntheticGenerator:
                 return self.indicator_name_by_id.get(int(picked), "Out-of-pocket Expenditure")
             return "Out-of-pocket Expenditure"
         if table == "moci_fact_manufacturing_sector_total_investments" and c == "FIRM_NAME_EN":
-            return random.choice(["Qatar Industrial Co.", "Doha Manufacturing Group", "Gulf Precision Works", "National Processing LLC"])
+            return random.choice([x[0] for x in MOCI_FIRM_EN_AR])
+        if table == "moci_fact_manufacturing_sector_total_investments" and c == "FIRM_NAME_AR":
+            en = ctx.get("FIRM_NAME_EN") or random.choice([x[0] for x in MOCI_FIRM_EN_AR])
+            pair = next((x for x in MOCI_FIRM_EN_AR if x[0] == en), None)
+            return pair[1] if pair else self.ensure_arabic_text(en, table=table, col=c)
         if table == "moci_fact_manufacturing_sector_total_investments" and c == "ACTIVITY_TYPE":
             return random.choice(self.column_domains.get("ACTIVITY_TYPE", CURATED_DOMAINS["ACTIVITY_TYPE"]))
         if table == "moci_fact_manufacturing_sector_total_investments" and c == "FIRM_STAGE":
             return random.choice(self.column_domains.get("FIRM_STAGE", CURATED_DOMAINS["FIRM_STAGE"]))
+        if table == "moci_fact_manufacturing_sector_total_investments" and c == "ISIC2_CODE":
+            return random.choice(self.column_domains.get("ISIC2_CODE", CURATED_DOMAINS["ISIC2_CODE"]))
+        if table == "moci_fact_manufacturing_sector_total_investments" and c == "ISIC6_CODE":
+            return random.choice(self.column_domains.get("ISIC6_CODE", CURATED_DOMAINS["ISIC6_CODE"]))
+        if table == "moci_fact_manufacturing_sector_total_investments" and c == "ISIC2_CODE_DESCRIPTION_EN":
+            return random.choice([x[0] for x in MOCI_ISIC2_EN_AR])
+        if table == "moci_fact_manufacturing_sector_total_investments" and c == "ISIC2_CODE_DESCRIPTION_AR":
+            en = ctx.get("ISIC2_CODE_DESCRIPTION_EN") or random.choice([x[0] for x in MOCI_ISIC2_EN_AR])
+            pair = next((x for x in MOCI_ISIC2_EN_AR if x[0] == en), None)
+            return pair[1] if pair else self.ensure_arabic_text(en, table=table, col=c)
+        if table == "moci_fact_manufacturing_sector_total_investments" and c == "ISIC6_CODE_DESCRIPTION_EN":
+            return random.choice([x[0] for x in MOCI_ISIC6_EN_AR])
+        if table == "moci_fact_manufacturing_sector_total_investments" and c == "ISIC6_CODE_DESCRIPTION_AR":
+            en = ctx.get("ISIC6_CODE_DESCRIPTION_EN") or random.choice([x[0] for x in MOCI_ISIC6_EN_AR])
+            pair = next((x for x in MOCI_ISIC6_EN_AR if x[0] == en), None)
+            return pair[1] if pair else self.ensure_arabic_text(en, table=table, col=c)
+        if table == "grsia_fact_grsia_data" and c == "EMPLOYER_AR":
+            return random.choice(["شركة وطنية", "مؤسسة خاصة", "جهة حكومية"])
         if table == "moci_fact_strategic_commodities_reserve" and c == "GROUP_NAME_EN":
             return random.choice(["Food Commodities", "Industrial Materials", "Medical Supplies"])
         if table == "moci_fact_strategic_commodities_reserve" and c == "GROUP_NAME_AR":
             return self.translate_en_to_ar(random.choice(["Food Commodities", "Industrial Materials", "Medical Supplies"]))
         return None
 
-    def ensure_arabic_text(self, value: object) -> str:
+    def ensure_arabic_text(self, value: object, table: Optional[str] = None, col: Optional[str] = None, semantic_role: Optional[str] = None) -> str:
         s = "" if value is None else str(value).strip()
+        col_upper = (col or "").upper()
+        if col_upper == "INDICATOR_NAME_AR":
+            resolved = self.resolve_indicator_name_ar(s, metric_hint=None, record_missing=True)
+            if resolved:
+                return resolved
+            raise ValueError(f"Missing canonical Arabic mapping for INDICATOR_NAME: '{s}'")
+        protected = self.is_protected_ar_column(col)
         if not s:
-            return "قيمة"
-        if re.search(r"[A-Za-z]", s):
-            return self.translate_en_to_ar(s)
-        return s
+            return self.protected_ar_template(col, semantic_role) if protected else self.semantic_ar_fallback(semantic_role, col)
+        if s in ARABIC_DISALLOWED_VALUES or (protected and s in PROTECTED_AR_BANNED_VALUES):
+            return self.protected_ar_template(col, semantic_role) if protected else self.semantic_ar_fallback(semantic_role, col)
+        if re.search(r"[\u0600-\u06FF]", s) and not re.search(r"[A-Za-z]", s):
+            if protected and s in PROTECTED_AR_BANNED_VALUES:
+                return self.protected_ar_template(col, semantic_role)
+            return s
+        translated, method = self.translate_en_to_ar_detailed(s, table=table, col=col, semantic_role=semantic_role)
+        if protected and (method == "semantic_fallback" or translated in PROTECTED_AR_BANNED_VALUES):
+            return self.protected_ar_template(col, semantic_role)
+        if translated and translated not in ARABIC_DISALLOWED_VALUES:
+            return translated
+        return self.protected_ar_template(col, semantic_role) if protected else self.semantic_ar_fallback(semantic_role, col)
 
     def en_ar_pairs(self, table: str) -> List[Tuple[str, str]]:
         if table in self.table_pair_cache:
@@ -1072,20 +1496,34 @@ class SyntheticGenerator:
                 en_val = self.default_english_for_pair(en_col)
                 row_values[en_idx] = en_val
 
-            if ar_col in ("INDICATOR_DEFINITION_AR", "QDTI_DESCRIPTION_AR"):
-                existing_ar = row_values[ar_idx]
-                if existing_ar is not None:
-                    ar_s = str(existing_ar).strip()
-                    if ar_s and re.search(r"[\u0600-\u06FF]", ar_s) and not re.search(r"[A-Za-z]", ar_s) and ar_s not in ARABIC_FILLER_VALUES:
-                        continue
-
             if metric_hint and table == "dim_indicators":
+                if ar_col == "INDICATOR_NAME_AR":
+                    resolved = self.resolve_indicator_name_ar(en_val, metric_hint=metric_hint, record_missing=True)
+                    if not resolved:
+                        raise ValueError(f"Missing canonical Arabic mapping for INDICATOR_NAME: '{en_val}'")
+                    row_values[ar_idx] = resolved
+                    continue
+                if ar_col == "QDTI_DESCRIPTION_AR":
+                    desc_ar = self.metric_get(metric_hint, "Short Description AR", "Short Description AR ")
+                    if desc_ar and desc_ar.strip():
+                        row_values[ar_idx] = self.ensure_arabic_text(desc_ar, table=table, col=ar_col, semantic_role="description")
+                    else:
+                        src_idx = idx_map.get("QDTI_DESCRIPTION_EN")
+                        src_val = row_values[src_idx] if src_idx is not None else en_val
+                        row_values[ar_idx] = self.ensure_arabic_text(src_val, table=table, col=ar_col, semantic_role="description")
+                    continue
                 if ar_col == "INDICATOR_DEFINITION_AR":
                     ar_text = self.metric_get(metric_hint, "Short Description AR", "Short Description AR ")
-                    row_values[ar_idx] = self.ensure_arabic_text(ar_text if ar_text else self.translate_en_to_ar(en_val))
+                    row_values[ar_idx] = self.ensure_arabic_text(ar_text if ar_text else en_val, table=table, col=ar_col, semantic_role="definition")
+                    continue
+                if ar_col in INDICATOR_AR_SOURCE_COLUMNS:
+                    src_col = INDICATOR_AR_SOURCE_COLUMNS[ar_col]
+                    src_idx = idx_map.get(src_col)
+                    src_val = row_values[src_idx] if src_idx is not None else en_val
+                    row_values[ar_idx] = self.ensure_arabic_text(src_val, table=table, col=ar_col)
                     continue
 
-            row_values[ar_idx] = self.ensure_arabic_text(self.translate_en_to_ar(en_val))
+            row_values[ar_idx] = self.ensure_arabic_text(en_val, table=table, col=ar_col)
 
     def enforce_id_consistency_for_row(self, table: str, cols: Sequence[str], row_values: List[object]) -> None:
         idx_map = {c: i for i, c in enumerate(cols)}
@@ -1188,8 +1626,16 @@ class SyntheticGenerator:
             if cmeta:
                 if "NATIONALITY" in idx_map:
                     row_values[idx_map["NATIONALITY"]] = cmeta["NATIONALITY_EN"]
+                if "NATIONALITY_AR" in idx_map:
+                    row_values[idx_map["NATIONALITY_AR"]] = cmeta["NATIONALITY_AR"]
                 if "REGION" in idx_map:
                     row_values[idx_map["REGION"]] = cmeta["REGION_EN"]
+                if "REGION_AR" in idx_map:
+                    row_values[idx_map["REGION_AR"]] = cmeta["REGION_AR"]
+                if "COUNTRY_NAME_EN" in idx_map:
+                    row_values[idx_map["COUNTRY_NAME_EN"]] = cmeta["COUNTRY_NAME_EN"]
+                if "COUNTRY_NAME_AR" in idx_map:
+                    row_values[idx_map["COUNTRY_NAME_AR"]] = cmeta["COUNTRY_NAME_AR"]
                 if "GENDER" in idx_map and row_values[idx_map["GENDER"]] not in ("Male", "Female"):
                     row_values[idx_map["GENDER"]] = random.choice(["Male", "Female"])
 
@@ -1210,6 +1656,8 @@ class SyntheticGenerator:
                     row_values[idx_map["ACTIVITY_AR"]] = SECTOR_ACTIVITY_AR.get(sval[0], sval[1])
                 if "ESTABLISHMENT_NAME_AR" in idx_map:
                     row_values[idx_map["ESTABLISHMENT_NAME_AR"]] = f"مؤسسة {sval[1]}"
+                if "EMPLOYER_AR" in idx_map:
+                    row_values[idx_map["EMPLOYER_AR"]] = f"جهة {sval[1]}"
 
         # Trade type canonical values by TRADE_TYPE_ID.
         tidx = idx_map.get("TRADE_TYPE_ID")
@@ -1237,6 +1685,10 @@ class SyntheticGenerator:
             if iname:
                 if "INDICATOR" in idx_map:
                     row_values[idx_map["INDICATOR"]] = iname
+                if "INDICATOR_NAME" in idx_map:
+                    row_values[idx_map["INDICATOR_NAME"]] = iname
+                if "INDICATOR_NAME_AR" in idx_map:
+                    row_values[idx_map["INDICATOR_NAME_AR"]] = self.ensure_arabic_text(iname, table=table, col="INDICATOR_NAME_AR", semantic_role="name")
 
     def allocate_rows(self) -> Dict[str, int]:
         dims = [t for t in self.tables if classify_table_role(t) == "dimension"]
@@ -1361,7 +1813,7 @@ class SyntheticGenerator:
             return rows
 
         if table == "hmc_dim_visit_type":
-            rows = [(1, "Outpatient", "عيادات خارجية"), (2, "Emergency", "طوارئ"), (3, "Inpatient", "تنويم")]
+            rows = [(1, "Outpatient", "عيادات خارجية"), (2, "Emergency", "طوارئ"), (3, "Inpatient", "مريض داخلي")]
             self.id_pools["VISIT_TYPE_ID"] = [r[0] for r in rows]
             self.visit_type_by_id = {int(r[0]): (r[1], r[2]) for r in rows}
             return rows
@@ -1406,7 +1858,7 @@ class SyntheticGenerator:
                 e0 = lvl0[(i - 1) % len(lvl0)]
                 e1 = lvl1[(i - 1) % len(lvl1)]
                 sk = skill[(i - 1) % len(skill)]
-                rows.append((i, i, i, i, e0, self.translate_en_to_ar(e0), e1, self.translate_en_to_ar(e1), sk, self.translate_en_to_ar(sk), f"run-{i}", f"trg-{i}", dt.datetime.utcnow(), f"run-{i}", "pipeline", f"{self.pick_year()}-{int(np.random.randint(1,13)):02d}"))
+                rows.append((i, i, i, i, e0, EDUCATION_AR_MAP[e0], e1, EDUCATION_AR_MAP[e1], sk, EDUCATION_AR_MAP[sk], f"run-{i}", f"trg-{i}", dt.datetime.utcnow(), f"run-{i}", "pipeline", f"{self.pick_year()}-{int(np.random.randint(1,13)):02d}"))
             self.id_pools["EDUCATION_LEVEL_ID"] = [r[3] for r in rows]
             return [tuple(r[: len(cols)]) for r in rows]
 
@@ -1420,7 +1872,12 @@ class SyntheticGenerator:
             for i in range(max(count, len(metrics))):
                 m = metrics[i % len(metrics)]
                 iid = i + 1
-                name = (m.get("Indicator SCEAI Name") if isinstance(m, dict) else None) or f"Indicator {i+1}"
+                name = (m.get("Indicator SCEAI Name") if isinstance(m, dict) else None) or random.choice([
+                    "Economic Competitiveness Signal",
+                    "Human Capital Progress Measure",
+                    "Sustainable Growth Composite",
+                    "National Productivity Benchmark",
+                ])
                 sector = (m.get("Indicator Sector (cleansed)") if isinstance(m, dict) else None) or random.choice(self.column_domains.get("SECTOR", CURATED_DOMAINS["ACTIVITY_TYPE"]))
                 definition = (m.get("Short description EN") if isinstance(m, dict) else None) or f"Synthetic definition for {name}"
                 row = [None] * len(cols)
@@ -1481,14 +1938,20 @@ class SyntheticGenerator:
                     elif c == "QDTI_DESCRIPTION_EN":
                         row[j] = f"Detailed description for {name}"
                     elif c == "QDTI_DESCRIPTION_AR":
-                        name_ar = self.ensure_arabic_text(self.translate_en_to_ar(name))
-                        row[j] = f"وصف تفصيلي لـ {name_ar}"
+                        metric_desc_ar = self.metric_get(m if isinstance(m, dict) else {}, "Short Description AR", "Short Description AR ")
+                        if metric_desc_ar:
+                            row[j] = self.ensure_arabic_text(metric_desc_ar, table=table, col=c, semantic_role="description")
+                        else:
+                            row[j] = self.ensure_arabic_text(row[j - 1], table=table, col=c, semantic_role="description")
                     elif c == "INDICATOR_NAME_AR":
-                        row[j] = self.ensure_arabic_text(self.translate_en_to_ar(name))
+                        resolved = self.resolve_indicator_name_ar(name, metric_hint=m if isinstance(m, dict) else None, record_missing=True)
+                        if not resolved:
+                            raise ValueError(f"Missing canonical Arabic mapping for INDICATOR_NAME: '{name}'")
+                        row[j] = resolved
                     elif c == "INDICATOR_DEFINITION_AR":
-                        row[j] = self.ensure_arabic_text(self.metric_get(m, "Short Description AR", "Short Description AR ") or self.translate_en_to_ar(definition))
+                        row[j] = self.ensure_arabic_text(self.metric_get(m if isinstance(m, dict) else {}, "Short Description AR", "Short Description AR ") or definition, table=table, col=c, semantic_role="definition")
                     elif c == "INDICATOR_SECTOR_AR":
-                        row[j] = self.ensure_arabic_text(self.translate_en_to_ar(sector))
+                        row[j] = self.ensure_arabic_text(sector, table=table, col=c, semantic_role="sector")
                     elif c == "EARLIEST_DATE_WHERE_QATAR_IS_AVAILABLE":
                         row[j] = self.args.start_year
                     elif c == "TARGET_VALUE_NUMERIC":
@@ -1500,7 +1963,7 @@ class SyntheticGenerator:
                     elif c == "TREND_DIRECTION":
                         row[j] = random.choice(["Up", "Down", "Stable"])
                     elif c.endswith("_AR"):
-                        row[j] = self.translate_en_to_ar(row[j - 1] if j > 0 else name)
+                        row[j] = self.ensure_arabic_text(row[j - 1] if j > 0 else name, table=table, col=c)
                     elif c in ("IS_QPULSE",):
                         row[j] = bool(np.random.rand() > 0.5)
                     elif dtype in ("LONG", "INT"):
@@ -1599,6 +2062,8 @@ class SyntheticGenerator:
         if dtype == "STRING" and self.is_controlled_column(cname):
             forced = self.controlled_text_value(table, cname, row_ctx)
             if forced is not None:
+                if self.is_placeholder_text(forced):
+                    forced = self.default_english_for_pair(cname)
                 row_ctx[cname] = forced
                 return forced
             if cname.endswith("_AR"):
@@ -1608,13 +2073,15 @@ class SyntheticGenerator:
                 if en_val is None:
                     en_val = self.default_english_for_pair(en_col if en_col else base_col)
                     row_ctx[en_col if en_col else base_col] = en_val
-                return self.translate_en_to_ar(en_val)
+                return self.ensure_arabic_text(en_val, table=table, col=cname)
             if any(k in cname for k in ["RATIO", "SCORE", "RANK", "GDP_PER_CAPITA", "POPULATION", "VALUE"]):
                 num = self.numeric_value(cname, row_ctx.get("COUNTRY_ID"), row_ctx.get("YEAR"))
                 if "RANK" in cname:
                     return str(int(max(1, round(num))))
                 return f"{float(num):.2f}"
             fallback = self.default_english_for_pair(cname)
+            if self.is_placeholder_text(fallback):
+                fallback = "Reference Value"
             row_ctx[cname] = fallback
             return fallback
 
@@ -1722,10 +2189,26 @@ class SyntheticGenerator:
             en = row_ctx.get("ITEM_EN") or random.choice(self.column_domains.get("TREASURY_ITEM", CURATED_DOMAINS["TREASURY_ITEM"]))
             return self.translate_en_to_ar(en)
         if table == "grsia_fact_grsia_data" and cname == "EMPLOYER_AR":
-            return random.choice(["شركة وطنية", "مؤسسة قطرية", "جهة حكومية", "شركة خاصة"])
+            sec = row_ctx.get("ESTABLISHMENT_SECTOR_ID")
+            if sec is not None:
+                try:
+                    sec_tuple = self.establishment_sector_by_id.get(int(sec))
+                except Exception:
+                    sec_tuple = None
+                if sec_tuple:
+                    return f"جهة {sec_tuple[1]}"
+            return random.choice(["شركة وطنية", "مؤسسة خاصة", "جهة حكومية"])
         if table == "grsia_fact_grsia_data" and cname == "ACTIVITY_AR":
             return random.choice(list(SECTOR_ACTIVITY_AR.values()))
         if table == "grsia_fact_grsia_data" and cname == "ESTABLISHMENT_NAME_AR":
+            sec = row_ctx.get("ESTABLISHMENT_SECTOR_ID")
+            if sec is not None:
+                try:
+                    sec_tuple = self.establishment_sector_by_id.get(int(sec))
+                except Exception:
+                    sec_tuple = None
+                if sec_tuple:
+                    return f"مؤسسة {sec_tuple[1]}"
             return random.choice(["مؤسسة الدوحة", "شركة الخليج", "مجموعة قطر", "مركز الخدمات"])
         if table.startswith("moehe_fact_") and cname == "ACADEMIC_STAGE":
             lvl = row_ctx.get("ACADEMIC_LEVEL_ID")
@@ -1751,7 +2234,7 @@ class SyntheticGenerator:
         if cname.endswith("_AR"):
             en_col = cname[:-3] + "_EN"
             en_val = row_ctx.get(en_col)
-            return self.translate_en_to_ar(en_val) if en_val is not None else "عام"
+            return self.ensure_arabic_text(en_val, table=table, col=cname) if en_val is not None else self.semantic_ar_fallback(col_name=cname)
         if cname.endswith("_EN"):
             return self.default_english_for_pair(cname)
         if "PIPELINE" in cname:
@@ -1771,7 +2254,7 @@ class SyntheticGenerator:
             return self.default_english_for_pair(cname)
         if dtype == "STRING":
             if "DESCRIPTION" in cname or "DEFINITION" in cname:
-                return "General description"
+                return "Policy description"
             if cname == "INDICATOR":
                 iid = row_ctx.get("INDICATOR_ID")
                 if iid is not None:
@@ -2010,36 +2493,24 @@ def validate_source_of_truth(cur, tables: Dict[str, TableMeta], fk_edges: Dict[s
         if bad > 0:
             issues.append(f"mof_fact_return_on_treasury.QUARTER: {bad} out of range [1,4]")
 
-    # 5) Placeholder token detector.
+    # 5) Placeholder token detector for controlled text fields.
     for tname, tmeta in tables.items():
         for col in tmeta.column_names:
-            if tmeta.dtype(col) != "STRING":
+            if tmeta.dtype(col) != "STRING" or not gen.is_controlled_column(col):
                 continue
-            sql = (
-                f"SELECT COUNT(*) FROM {qident(tname)} WHERE {qident(col)} IS NOT NULL AND ("
-                f"CAST({qident(col)} AS CHAR) GLOB 'Status [0-9]*' OR "
-                f"CAST({qident(col)} AS CHAR) GLOB 'Usage [0-9]*' OR "
-                f"CAST({qident(col)} AS CHAR) GLOB 'Type [A-Z]*' OR "
-                f"CAST({qident(col)} AS CHAR) GLOB 'Category [A-Z]*' OR "
-                f"CAST({qident(col)} AS CHAR) GLOB 'Item [0-9]*' OR "
-                f"CAST({qident(col)} AS CHAR) GLOB 'Indicator [0-9]*' OR "
-                f"CAST({qident(col)} AS CHAR) GLOB 'Academic Stage [0-9]*')"
+            cur.execute(
+                f"SELECT CAST({qident(col)} AS CHAR) FROM {qident(tname)} WHERE {qident(col)} IS NOT NULL "
+                f"AND CAST({qident(col)} AS CHAR) GLOB '* [0-9]*'"
             )
-            cur.execute(sql)
-            bad = int(cur.fetchone()[0])
+            candidates = [str(r[0]) for r in cur.fetchall() if r and r[0] is not None]
+            bad_vals = []
+            for value in candidates:
+                s = value.strip()
+                if re.fullmatch(r".+\s\d+$", s) and not gen.is_allowlisted_numbered_text(s):
+                    bad_vals.append(s)
+            bad = len(bad_vals)
             if bad > 0:
-                cur.execute(
-                    f"SELECT CAST({qident(col)} AS CHAR) FROM {qident(tname)} WHERE {qident(col)} IS NOT NULL AND ("
-                    f"CAST({qident(col)} AS CHAR) GLOB 'Status [0-9]*' OR "
-                    f"CAST({qident(col)} AS CHAR) GLOB 'Usage [0-9]*' OR "
-                    f"CAST({qident(col)} AS CHAR) GLOB 'Type [A-Z]*' OR "
-                    f"CAST({qident(col)} AS CHAR) GLOB 'Category [A-Z]*' OR "
-                    f"CAST({qident(col)} AS CHAR) GLOB 'Item [0-9]*' OR "
-                    f"CAST({qident(col)} AS CHAR) GLOB 'Indicator [0-9]*' OR "
-                    f"CAST({qident(col)} AS CHAR) GLOB 'Academic Stage [0-9]*') LIMIT 1"
-                )
-                sample = cur.fetchone()
-                sval = sample[0] if sample else ""
+                sval = bad_vals[0]
                 issues.append(f"{tname}.{col}: {bad} placeholder-pattern values (sample='{sval}')")
 
     # 6) Generic AR filler overuse and low-information AR values.
@@ -2072,6 +2543,20 @@ def validate_source_of_truth(cur, tables: Dict[str, TableMeta], fk_edges: Dict[s
                 topv = str(topv[0]) if topv else ""
                 if topv in ARABIC_FILLER_VALUES:
                     issues.append(f"{tname}.{c}: dominant generic AR filler '{topv}' across {total} rows")
+
+    # 6.1) Protected AR columns must not use banned generic fillers.
+    for tname, tmeta in tables.items():
+        for c in tmeta.column_names:
+            if c.upper() not in PROTECTED_AR_COLUMNS:
+                continue
+            banned_vals = ", ".join(mysql_literal(v) for v in sorted(PROTECTED_AR_BANNED_VALUES))
+            cur.execute(
+                f"SELECT COUNT(*) FROM {qident(tname)} WHERE {qident(c)} IS NOT NULL "
+                f"AND CAST({qident(c)} AS CHAR) IN ({banned_vals})"
+            )
+            bad = int(cur.fetchone()[0])
+            if bad > 0:
+                issues.append(f"{tname}.{c}: {bad} banned protected AR fallback values")
 
     # 7) Semantic type checks for numeric-semantic fields stored as text.
     if "intl_fact_pisa_ranking" in tables and "READING_MEAN" in set(tables["intl_fact_pisa_ranking"].column_names):
@@ -2121,6 +2606,93 @@ def validate_source_of_truth(cur, tables: Dict[str, TableMeta], fk_edges: Dict[s
             non_null = int(cur.fetchone()[0])
             if non_null <= 0:
                 issues.append(f"{tname}.{c}: all values are NULL")
+
+    # 11) Canonical visit-type lock: Inpatient -> مريض داخلي
+    if "hmc_dim_visit_type" in tables:
+        sql = (
+            f"SELECT COUNT(*) FROM {qident('hmc_dim_visit_type')} "
+            f"WHERE {qident('VISIT_TYPE_EN')}='Inpatient' AND {qident('VISIT_TYPE_AR')}<>'مريض داخلي'"
+        )
+        cur.execute(sql)
+        bad = int(cur.fetchone()[0])
+        if bad > 0:
+            issues.append(f"hmc_dim_visit_type: {bad} rows violate Inpatient->مريض داخلي")
+
+    # 12) Indicator name/definition AR separation when EN differs.
+    if "dim_indicators" in tables:
+        cols = set(tables["dim_indicators"].column_names)
+        required = {"INDICATOR_NAME", "INDICATOR_DEFINITION", "INDICATOR_NAME_AR", "INDICATOR_DEFINITION_AR"}
+        if required.issubset(cols):
+            sql = (
+                f"SELECT COUNT(*) FROM {qident('dim_indicators')} WHERE "
+                f"CAST({qident('INDICATOR_NAME')} AS CHAR) <> CAST({qident('INDICATOR_DEFINITION')} AS CHAR) "
+                f"AND CAST({qident('INDICATOR_NAME_AR')} AS CHAR) = CAST({qident('INDICATOR_DEFINITION_AR')} AS CHAR)"
+            )
+            cur.execute(sql)
+            bad = int(cur.fetchone()[0])
+            if bad > 0:
+                issues.append(f"dim_indicators: {bad} rows with INDICATOR_NAME_AR replicated from INDICATOR_DEFINITION_AR")
+
+        # 12.1) Indicator name AR must not use generic placeholders.
+        if {"INDICATOR_NAME", "INDICATOR_NAME_AR"}.issubset(cols):
+            cur.execute(
+                f"SELECT COUNT(*) FROM {qident('dim_indicators')} WHERE {qident('INDICATOR_NAME')} IS NOT NULL "
+                f"AND ({qident('INDICATOR_NAME_AR')} IS NULL OR TRIM(CAST({qident('INDICATOR_NAME_AR')} AS CHAR)) = '' "
+                f"OR CAST({qident('INDICATOR_NAME_AR')} AS CHAR) IN ('مسمى المؤشر','اسم معتمد'))"
+            )
+            bad = int(cur.fetchone()[0])
+            if bad > 0:
+                issues.append(f"dim_indicators.INDICATOR_NAME_AR: {bad} null/generic values")
+
+            cur.execute(
+                f"SELECT COUNT(*) FROM {qident('dim_indicators')} WHERE {qident('INDICATOR_NAME_AR')} IS NOT NULL AND ("
+                f"CAST({qident('INDICATOR_NAME_AR')} AS CHAR) GLOB '*--*' OR "
+                f"CAST({qident('INDICATOR_NAME_AR')} AS CHAR) GLOB '*,,*' OR "
+                f"CAST({qident('INDICATOR_NAME_AR')} AS CHAR) GLOB '*()*' OR "
+                f"CAST({qident('INDICATOR_NAME_AR')} AS CHAR) GLOB '*[A-Za-z]*')"
+            )
+            bad = int(cur.fetchone()[0])
+            if bad > 0:
+                issues.append(f"dim_indicators.INDICATOR_NAME_AR: {bad} malformed/artifact values")
+
+            cur.execute(f"SELECT DISTINCT CAST({qident('INDICATOR_NAME')} AS CHAR) FROM {qident('dim_indicators')} WHERE {qident('INDICATOR_NAME')} IS NOT NULL")
+            missing = []
+            for row in cur.fetchall():
+                en_name = row[0]
+                mapped = gen.resolve_indicator_name_ar(en_name, metric_hint=None, record_missing=False)
+                if not mapped:
+                    missing.append(str(en_name))
+            if missing:
+                issues.append(f"dim_indicators.INDICATOR_NAME_AR: missing canonical mappings for {len(missing)} names (sample='{missing[0]}')")
+
+    # 13) Low diversity collapse in controlled columns.
+    tiny_allow = {
+        ("dim_gender", "GENDER_EN"),
+        ("dim_gender", "GENDER_AR"),
+        ("intl_fact_ntm_frequency_ratio", "TRADE_TYPE_EN"),
+        ("intl_fact_ntm_frequency_ratio", "TRADE_TYPE_AR"),
+        ("gac_fact_time_to_import_and_export", "CATEGORY_EN"),
+        ("gac_fact_time_to_import_and_export", "CATEGORY_AR"),
+        ("moci_fact_manufacturing_sector_total_investments", "ISIC2_CODE_DESCRIPTION_AR"),
+        ("moci_fact_manufacturing_sector_total_investments", "ISIC6_CODE_DESCRIPTION_AR"),
+        ("intl_fact_cybersecurity_index_ranking", "TIER_PERFORMANCE"),
+    }
+    for tname, tmeta in tables.items():
+        for col in tmeta.column_names:
+            if col.endswith("_ID"):
+                continue
+            if tmeta.dtype(col) != "STRING" or not gen.is_controlled_column(col):
+                continue
+            if (tname, col) in tiny_allow:
+                continue
+            if any(k in col for k in ("GENDER", "TRADE_TYPE", "VISIT_TYPE", "STATUS", "TIER_PERFORMANCE")):
+                continue
+            cur.execute(f"SELECT COUNT(*), COUNT(DISTINCT CAST({qident(col)} AS CHAR)) FROM {qident(tname)} WHERE {qident(col)} IS NOT NULL")
+            total, distinct_n = cur.fetchone()
+            total = int(total)
+            distinct_n = int(distinct_n)
+            if total >= 30 and distinct_n < 3:
+                issues.append(f"{tname}.{col}: low diversity ({distinct_n} distinct over {total} rows)")
 
     return issues
 
@@ -2422,3 +2994,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

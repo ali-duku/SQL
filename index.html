@@ -641,29 +641,19 @@
     let autocompleteActiveIndex = -1;
     let resultState = { columns: [], rawValues: [], sortIndex: -1, sortDir: 'asc', valueFilters: {} };
     let menuState = null;
-    const APP_VERSION = "v1.11.2";
+    const APP_VERSION = "v1.11.0";
     const SEEN_VERSION_KEY = "duplexer_sql_explorer_seen_version";
     const RELEASE_NOTES = [
       {
-        version: "v1.11.2",
+        version: "v1.11.0",
         date: "2026-02-24",
         notes: [
-          "Moved dataset loading out of inline HTML by loading external gold.sqlite for faster startup.",
-          "Added resilient dataset fetch flow with SQL fallback and clearer initialization errors.",
-          "Reduced index.html payload significantly to restore near-instant app boot behavior."
-        ]
-      },{
-        version: "v1.11.1",
-        date: "2026-02-24",
-        notes: [
-          "Implemented natural Arabic generation with transliteration fallback removed for controlled business fields.",
-          "Locked canonical visit-type mapping (Inpatient -> ???? ?????) and expanded FK-linked descriptor synchronization.",
-          "Hardened controlled-domain realism for manufacturing and GRSIA fields; removed generic placeholders and N-style fillers.",
-          "Fixed dim_indicators AR sourcing so name/definition/metadata Arabic columns map from their own semantic EN sources.",
-          "Expanded strict validation gates for low-diversity collapse, indicator AR replication, and canonical consistency checks."
+          "Hardened Arabic data quality with strict canonical indicator-name mapping and stronger AR validation rules.",
+          "Removed synthetic placeholder patterns from controlled business text columns and tightened quality gates.",
+          "Stabilized app initialization and loading via external dataset flow with resilient fetch handling."
         ]
       },
-{
+      {
         version: "v1.10.0",
         date: "2026-02-24",
         notes: [
