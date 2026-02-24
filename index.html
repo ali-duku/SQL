@@ -1674,7 +1674,14 @@
         db = new SQL.Database();
         db.exec("ATTACH DATABASE ':memory:' AS gold;");
 
-        const raw = document.getElementById('seedSql').textContent;
+        const seedEl = document.getElementById('seedSql');
+        if (!seedEl) {
+          throw new Error("Seed SQL block not found in DOM.");
+        }
+        const raw = seedEl.textContent || "";
+        if (!raw.trim()) {
+          throw new Error("Seed SQL block is empty.");
+        }
         setStatus('Loading SQL dump into in-browser database...');
         await execDumpSqlRobust(raw, (p) => {
           if (p.phase === "loading") {
@@ -1818,7 +1825,11 @@
 
     renderReleaseNotes();
     openWhatsNewIfFirstTimeForVersion();
-    init();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
   </script>
 
   <script id="seedSql" type="text/plain">
