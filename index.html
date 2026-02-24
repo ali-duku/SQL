@@ -650,7 +650,8 @@
         notes: [
           "Hardened Arabic data quality with strict canonical indicator-name mapping and stronger AR validation rules.",
           "Removed synthetic placeholder patterns from controlled business text columns and tightened quality gates.",
-          "Stabilized app initialization and loading via external dataset flow with resilient fetch handling."
+          "Stabilized app initialization and loading via external dataset flow with resilient fetch handling.",
+          "Fixed column value-filter search input focus loss during typing by preserving focus and caret position across menu re-renders."
         ]
       },
       {
@@ -1143,8 +1144,19 @@
 
       const searchEl = colMenuEl.querySelector('#menuSearch');
       if (searchEl) {
+        if (menuState.keepSearchFocus) {
+          const pos = Number.isFinite(menuState.searchCursor) ? menuState.searchCursor : (menuState.search || '').length;
+          searchEl.focus();
+          try {
+            searchEl.setSelectionRange(pos, pos);
+          } catch (_) {}
+          menuState.keepSearchFocus = false;
+          menuState.searchCursor = null;
+        }
         searchEl.addEventListener('input', () => {
           menuState.search = searchEl.value || '';
+          menuState.keepSearchFocus = true;
+          menuState.searchCursor = searchEl.selectionStart;
           renderColumnMenu();
         });
       }
