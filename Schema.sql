@@ -1061,7 +1061,7 @@ CREATE TABLE IF NOT EXISTS `mof_fact_national_budget` (
   `ADF_PERIOD` TEXT
 );
 
-CREATE TABLE IF NOT EXISTS `mof_fact_non_hydrocarbon_government_revenue_as_percentage_of_non` (
+CREATE TABLE IF NOT EXISTS `mof_fact_non_hydrocarbon_government_revenue_as_percentage_of_non_hydrocarbon_gdp` (
   `GLD_NON_HC_GOV_REV_AS_PERCENTAGE_OF_NON_HC_GDP_ID` BIGINT,
   `SLVR_NON_HC_GOV_REV_AS_PERCENTAGE_OF_NON_HC_GDP_ID` BIGINT,
   `BRNZ_NON_HC_GOV_REV_AS_PERCENTAGE_OF_NON_HC_GDP_ID` BIGINT,
@@ -1078,7 +1078,7 @@ CREATE TABLE IF NOT EXISTS `mof_fact_non_hydrocarbon_government_revenue_as_perce
   `ADF_PERIOD` TEXT
 );
 
-CREATE TABLE IF NOT EXISTS `mof_fact_non_hydrocarbon_government_revenue_as_percentage_of_tot` (
+CREATE TABLE IF NOT EXISTS `mof_fact_non_hydrocarbon_government_revenue_as_percentage_of_total_government_revenues` (
   `GLD_NON_HC_GOV_REVS_AS_PERCENTAGE_OF_TOTAL_GOV_REV_ID` BIGINT,
   `SLVR_NON_HC_GOV_REV_AS_PERCENTAGE_OF_TOTAL_GOV_REV_ID` BIGINT,
   `BRNZ_NON_HC_GOV_REV_AS_PERCENTAGE_OF_TOTAL_GOV_REV_ID` BIGINT,

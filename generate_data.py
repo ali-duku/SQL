@@ -2097,6 +2097,31 @@ def validate_source_of_truth(cur, tables: Dict[str, TableMeta], fk_edges: Dict[s
             if bad > 0:
                 issues.append(f"{tname}.ACADEMIC_YEAR: {bad} rows missing YEAR token")
 
+    # 9) Data presence: every table must contain at least one row.
+    for tname in sorted(tables.keys()):
+        cur.execute(f"SELECT COUNT(*) FROM {qident(tname)}")
+        cnt = int(cur.fetchone()[0])
+        if cnt <= 0:
+            issues.append(f"{tname}: no rows loaded")
+
+    # 10) Explicit MOF renamed-table checks (existence + meaningful numeric signals).
+    mof_checks = [
+        ("mof_fact_non_hydrocarbon_government_revenue_as_percentage_of_non_hydrocarbon_gdp", ["NON_OIL_&_GAS_REVENUE", "NON_OIL_&_GAS_NON_HYDROCARBON_GDP"]),
+        ("mof_fact_non_hydrocarbon_government_revenue_as_percentage_of_total_government_revenues", ["NON_OIL_&_GAS_REVENUE", "NON_OIL_&_GAS/TOTAL_REV"]),
+    ]
+    for tname, numeric_cols in mof_checks:
+        if tname not in tables:
+            issues.append(f"{tname}: missing table")
+            continue
+        for c in numeric_cols:
+            if c not in set(tables[tname].column_names):
+                issues.append(f"{tname}.{c}: missing column")
+                continue
+            cur.execute(f"SELECT COUNT(*) FROM {qident(tname)} WHERE {qident(c)} IS NOT NULL")
+            non_null = int(cur.fetchone()[0])
+            if non_null <= 0:
+                issues.append(f"{tname}.{c}: all values are NULL")
+
     return issues
 
 
@@ -2190,6 +2215,9 @@ def validate_sql_file_content(sql_file: Path, tables: Dict[str, TableMeta], fk_e
     import sqlite3
 
     raw = sql_file.read_text(encoding="utf-8")
+    coverage_issues = validate_sql_schema_coverage(raw, tables)
+    if coverage_issues:
+        return coverage_issues
     s = raw.replace("\r", "")
     s = re.sub(r"^\s*SET\s+.*?;\s*$", "", s, flags=re.M | re.I)
     s = re.sub(r"^\s*CREATE\s+DATABASE\s+.*?;\s*$", "", s, flags=re.M | re.I)
@@ -2200,6 +2228,59 @@ def validate_sql_file_content(sql_file: Path, tables: Dict[str, TableMeta], fk_e
     cur = con.cursor()
     cur.executescript(s.replace("`", "\""))
     return validate_source_of_truth(cur, tables, fk_edges, gen)
+
+
+def parse_sql_structure(sql_text: str) -> Tuple[Dict[str, List[str]], Dict[str, List[str]]]:
+    create_cols: Dict[str, List[str]] = {}
+    insert_cols: Dict[str, List[str]] = {}
+    create_re = re.compile(r"CREATE\s+TABLE\s+IF\s+NOT\s+EXISTS\s+`([^`]+)`\s*\((.*?)\)\s*;", re.I | re.S)
+    col_re = re.compile(r"^\s*`([^`]+)`\s+", re.I)
+    for m in create_re.finditer(sql_text):
+        t = m.group(1)
+        body = m.group(2)
+        cols: List[str] = []
+        for ln in body.splitlines():
+            cm = col_re.match(ln)
+            if cm:
+                cols.append(cm.group(1))
+        create_cols[t] = cols
+
+    insert_re = re.compile(r"INSERT\s+INTO\s+`([^`]+)`\s*\((.*?)\)\s*VALUES", re.I | re.S)
+    for m in insert_re.finditer(sql_text):
+        t = m.group(1)
+        cols_txt = m.group(2)
+        cols = re.findall(r"`([^`]+)`", cols_txt)
+        if cols:
+            insert_cols[t] = cols
+    return create_cols, insert_cols
+
+
+def validate_sql_schema_coverage(sql_text: str, tables: Dict[str, TableMeta]) -> List[str]:
+    issues: List[str] = []
+    expected_tables = set(tables.keys())
+    create_cols, insert_cols = parse_sql_structure(sql_text)
+    created_tables = set(create_cols.keys())
+
+    missing_tables = sorted(expected_tables - created_tables)
+    extra_tables = sorted(created_tables - expected_tables)
+    if missing_tables:
+        issues.append(f"Schema coverage: missing tables ({len(missing_tables)}): {', '.join(missing_tables[:10])}")
+    if extra_tables:
+        issues.append(f"Schema coverage: extra tables ({len(extra_tables)}): {', '.join(extra_tables[:10])}")
+
+    for t in sorted(expected_tables & created_tables):
+        expected_cols = tables[t].column_names
+        create_list = create_cols.get(t, [])
+        if expected_cols != create_list:
+            miss = [c for c in expected_cols if c not in create_list]
+            extra = [c for c in create_list if c not in expected_cols]
+            issues.append(f"{t}: CREATE TABLE column mismatch | missing={miss[:6]} extra={extra[:6]}")
+        ins = insert_cols.get(t, [])
+        if ins and ins != expected_cols:
+            miss = [c for c in expected_cols if c not in ins]
+            extra = [c for c in ins if c not in expected_cols]
+            issues.append(f"{t}: INSERT column mismatch | missing={miss[:6]} extra={extra[:6]}")
+    return issues
 
 
 def main() -> None:
@@ -2217,9 +2298,10 @@ def main() -> None:
     tables = remap_table_metadata(raw_tables, name_map)
     missing_tables = sorted(set(raw_tables.keys()) - set(name_map.keys()))
     if missing_tables:
-        logging.warning("Schema.csv tables skipped (not found/mapped in Schema.sql): %d", len(missing_tables))
+        logging.error("Schema.csv tables missing from Schema.sql mapping: %d", len(missing_tables))
         for t in missing_tables[:20]:
-            logging.warning("Skipped table: %s", t)
+            logging.error("Missing table mapping: %s", t)
+        raise RuntimeError("Schema coverage failed: one or more Schema.csv tables are missing in Schema.sql")
     metric_map = read_metric_map(metrics_csv_path, list(tables.keys()))
 
     dim_keys = infer_dimension_keys(tables)
